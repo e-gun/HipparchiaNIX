@@ -1,0 +1,27 @@
+# pkg install nano nginx python35 rsync sudo postgresql95-server curl
+# /usr/local/etc/rc.d/postgresql initdb
+# su pgsql
+$ createdb hipparchiaDB
+$ psql hipparchiaDB
+[generate_hipparchia_dbs.sql]
+
+huser@hipparchia:~/venv/HipparchiaBuilder % pkg info
+ca_root_nss-3.26               Root certificate bundle from the Mozilla Project
+curl-7.50.1                    Non-interactive tool to get files from FTP, GOPHER, HTTP(S) servers
+gettext-runtime-0.19.8.1       GNU gettext runtime libraries and programs
+indexinfo-0.2.4                Utility to regenerate the GNU info page index
+libffi-3.2.1                   Foreign Function Interface
+libxml2-2.9.3                  XML parser library for GNOME
+nano-2.4.3                     Nano's ANOther editor, an enhanced free Pico clone
+nginx-1.10.1_1,2               Robust and small WWW server
+openssl-1.0.2_14               SSL and crypto library
+pcre-8.39                      Perl Compatible Regular Expressions library
+perl5-5.20.3_15                Practical Extraction and Report Language
+pkg-1.8.7_1                    Package manager
+postgresql95-client-9.5.3      PostgreSQL database (client)
+postgresql95-server-9.5.3      The most advanced open-source database available anywhere
+python35-3.5.2                 Interpreted object-oriented programming language
+rsync-3.1.2_5                  Network file distribution/synchronization utility
+sudo-1.8.17p1                  Allow others to run commands as root
+
+

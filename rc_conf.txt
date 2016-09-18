@@ -1,0 +1,13 @@
+huser@hipparchia:~/venv/HipparchiaBuilder % more /etc/rc.conf
+hostname="hipparchia"
+ifconfig_em0="DHCP"
+ifconfig_em0_ipv6="inet6 accept_rtadv"
+sshd_enable="YES"
+ntpd_enable="NO"
+# Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable
+dumpdev="NO"
+nginx_enable="YES"
+postgresql_enable="YES"
+# custom rc...
+circusd_enable="YES"
+circusd_config="/usr/local/etc/circusd.ini"
