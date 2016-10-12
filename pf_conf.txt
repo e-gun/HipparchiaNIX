@@ -1,0 +1,23 @@
+huser@hipparchia:~ % more /etc/pf.conf
+ext_if="em0"
+
+tcp_services="{ 22, 80}"
+icmp_types="echoreq"
+
+#vboxhost="10.0.2.2"
+vboxhost="192.168.1.170"
+
+set block-policy return
+
+set skip on lo
+scrub in all
+
+###
+### Core rules
+###
+
+block in
+pass out keep state
+antispoof quick for { lo }
+
+pass in on $ext_if inet proto tcp from $vboxhost to ($ext_if) port $tcp_services flags S/SA keep state

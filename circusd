@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# PROVIDE: circusd
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="circusd"
+rcvar=circusd_enable
+
+start_cmd="${name}_start"
+stop_cmd=":"
+
+load_rc_config $name
+
+: ${circusd_enable="NO"}
+: ${circusd_config="/usr/local/etc/circusd.ini"}
+
+command=/usr/local/bin/circusd
+
+circusd_start()
+{
+  echo "Starting circusd"
+  ${command} --daemon ${circusd_config}
+}
+
+required_files="${circusd_config}"
+
+load_rc_config $name
+
+run_rc_command "$1"

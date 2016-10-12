@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# $FreeBSD: branches/2016Q3/net/rsync/files/rsyncd.in 367807 2014-09-10 09:36:24Z ehaupt $
+#
+
+# PROVIDE: rsyncd
+# REQUIRE: LOGIN
+# BEFORE:  securelevel
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable `rsyncd':
+#
+# rsyncd_enable="YES"
+# rsyncd_flags="<set as needed>"
+#
+# See rsync(1) for rsyncd_flags
+#
+
+. /etc/rc.subr
+
+name="rsyncd"
+rcvar=rsyncd_enable
+
+command="/usr/local/bin/rsync"
+start_precmd="rsyncd_precmd"
+pidfile="/var/run/$name.pid"
+
+# read configuration and set defaults
+load_rc_config "$name"
+: ${rsyncd_enable="NO"}
+: ${rsyncd_configfile:=/usr/local/etc/rsync/$name.conf}
+
+required_files="${rsyncd_configfile}"
+
+command_args="--daemon --config ${rsyncd_configfile}"
+
+rsyncd_precmd()
+{
+	if [ -f "/usr/local/etc/$name.conf" ] && [ ! -L "/usr/local/etc/$name.conf" ]; then
+		echo "Found /usr/local/etc/$name.conf in old location. Migrating to /usr/local/etc/rsync/$name.conf."
+		mv /usr/local/etc/$name.conf /usr/local/etc/rsync/$name.conf
+		ln -s /usr/local/etc/rsync/$name.conf /usr/local/etc/$name.conf
+	fi
+}
+
+run_rc_command "$1"

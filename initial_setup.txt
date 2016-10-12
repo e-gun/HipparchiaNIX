@@ -1,14 +1,46 @@
-# pkg install nano nginx python35 rsync sudo postgresql95-server curl
+# pkg install nano nginx python35 rsync sudo postgresql95-server curl git-lite
 # /usr/local/etc/rc.d/postgresql initdb
 # su pgsql
+$ cd ~
+$ /usr/local/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
 $ createdb hipparchiaDB
 $ psql hipparchiaDB
+
 [generate_hipparchia_dbs.sql]
 
-huser@hipparchia:~/venv/HipparchiaBuilder % pkg info
+$ exit
+
+# visudo [and add huser]
+
+$ mkdir venv logs run
+$ nano uwsgi.ini
+$ nano selfupdate.sh
+$ sudo nano /usr/local/etc/nginx/nginx.conf
+$ sudo nano /usr/local/etc/circusd.ini
+$ sudo nano /usr/local/etc/rc.d/circusd
+$ sudo cp ~/venv/bin/circusd /usr/local/bin/circusd
+$ nano ~/venv/HipparchiaServer/config.py
+$ nano ~/venv/HipparchiaBuilder/config.ini
+
+$ cd venv
+$ mkdir HipparchiaData HipparchiaServer HipparchiaSQLoader HipparchiaBuilder
+$ cd HipparchiaServer/ && git init
+$ cd HipparchiaBuilder/ && git init
+$ cd HipparchiaSQLoader/ && git init
+$ ln -s venv/bin/circusctl ~/
+
+[install jquery and fonts in ~/venv/HipparchiaServer/server/static/]
+[copy the relevant data into HipparchiaData]
+[load/build]
+[reboot]
+
+
+huser@hipparchia:~ % pkg info
 ca_root_nss-3.26               Root certificate bundle from the Mozilla Project
 curl-7.50.1                    Non-interactive tool to get files from FTP, GOPHER, HTTP(S) servers
+expat-2.1.1_2                  XML 1.0 parser written in C
 gettext-runtime-0.19.8.1       GNU gettext runtime libraries and programs
+git-lite-2.9.0                 Distributed source code management tool (lite package)
 indexinfo-0.2.4                Utility to regenerate the GNU info page index
 libffi-3.2.1                   Foreign Function Interface
 libxml2-2.9.3                  XML parser library for GNOME
