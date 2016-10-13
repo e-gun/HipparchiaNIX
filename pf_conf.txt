@@ -1,4 +1,3 @@
-huser@hipparchia:~ % more /etc/pf.conf
 ext_if="em0"
 
 tcp_services="{ 22, 80}"

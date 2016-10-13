@@ -1,4 +1,3 @@
-huser@hipparchia:~ % more nginx.conf
 load_module /usr/local/libexec/nginx/ngx_mail_module.so;
 load_module /usr/local/libexec/nginx/ngx_stream_module.so;
 

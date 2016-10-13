@@ -12,19 +12,15 @@ cd ~/venv/HipparchiaBuilder/ && git init && git pull https://github.com/e-gun/Hi
 cd ~/venv/HipparchiaSQLoader/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git
 cd ~/venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git
 
-sudo nano /etc/rc.conf
 sudo /usr/local/etc/rc.d/postgresql initdb
 sudo su pgsql
 	pgsql$ cd ~
 	pgsql$ /usr/local/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
 	pgsql$ createdb hipparchiaDB
 	pgsql$ psql hipparchiaDB
-
-	[insert sql via generate_hipparchia_dbs.sql]
-	[need two roles (hippa_wr & hippa_rd) and authors and works tables]
-
+		[insert sql via generate_hipparchia_dbs.sql]
+		[need two roles (hippa_wr & hippa_rd) and authors and works tables]
 	pgsql$ exit
-
 
 cp ~/venv/HipparchiaBSD/uwsgi.ini ~/uwsgi.ini
 cp ~/venv/HipparchiaBSD/selfupdate.sh ~/selfupdate.sh
@@ -33,14 +29,14 @@ source ~/.cshrc
 sudo cp ~/venv/HipparchiaBSD/ngingx_conf.txt /usr/local/etc/nginx/nginx.conf
 sudo cp ~/venv/HipparchiaBSD/circusd.ini /usr/local/etc/circusd.ini
 sudo cp ~/venv/HipparchiaBSD/circusd /usr/local/etc/rc.d/circusd
+sudo cp ~/venv/HipparchiaBSD/pf_conf.txt /etc/pf.conf
+sudo cat ~/venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
 
 /usr/local/bin/pyvenv-3.5 ~/venv/
 source ~/venv/bin/activate.csh
 pip install bs4 circus flask flask_wtf psycopg2 uWSGI
 
-
 ln -s venv/bin/circusctl ~/
-
 sudo cp ~/venv/bin/circusd /usr/local/bin/circusd
 nano ~/venv/HipparchiaServer/config.py
 nano ~/venv/HipparchiaBuilder/config.ini
