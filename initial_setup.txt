@@ -6,11 +6,11 @@ su root
 	root# exit
 
 mkdir venv logs run
-mkdir ~venv/HipparchiaData ~venv/HipparchiaServer ~venv/HipparchiaSQLoader ~venv/HipparchiaBuilder ~venv/HipparchiaBSD
-cd ~venv/HipparchiaServer/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git
-cd ~venv/HipparchiaBuilder/ && git init && git pull https://github.com/e-gun/HipparchiaBuilder.git
-cd ~venv/HipparchiaSQLoader/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git
-cd ~venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git
+mkdir ~/venv/HipparchiaData ~/venv/HipparchiaServer ~/venv/HipparchiaSQLoader ~/venv/HipparchiaBuilder ~/venv/HipparchiaBSD
+cd ~/venv/HipparchiaServer/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git
+cd ~/venv/HipparchiaBuilder/ && git init && git pull https://github.com/e-gun/HipparchiaBuilder.git
+cd ~/venv/HipparchiaSQLoader/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git
+cd ~/venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git
 
 sudo nano /etc/rc.conf
 sudo /usr/local/etc/rc.d/postgresql initdb
@@ -26,16 +26,16 @@ sudo su pgsql
 	pgsql$ exit
 
 
-nano uwsgi.ini
-nano selfupdate.sh
-nano ~/.cshrc [setenv  PYTHONENCODING  utf-8 is absolutely mandatory]
+cp ~/venv/HipparchiaBSD/uwsgi.ini ~/uwsgi.ini
+cp ~/venv/HipparchiaBSD/selfupdate.sh ~/selfupdate.sh
+cp ~/venv/HipparchiaBSD/cshrc.txt ~/.cshrc
 source ~/.cshrc 
-sudo nano /usr/local/etc/nginx/nginx.conf
-sudo nano /usr/local/etc/circusd.ini
-sudo nano /usr/local/etc/rc.d/circusd
+sudo cp ~/venv/HipparchiaBSD/ngingx_conf.txt /usr/local/etc/nginx/nginx.conf
+sudo cp ~/venv/HipparchiaBSD/circusd.ini /usr/local/etc/circusd.ini
+sudo cp ~/venv/HipparchiaBSD/circusd /usr/local/etc/rc.d/circusd
 
 /usr/local/bin/pyvenv-3.5 ~/venv/
-source venv/bin/activate.csh
+source ~/venv/bin/activate.csh
 pip install bs4 circus flask flask_wtf psycopg2 uWSGI
 
 
