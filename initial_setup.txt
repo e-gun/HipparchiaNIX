@@ -1,4 +1,5 @@
 # pkg install nano nginx python35 rsync sudo postgresql95-server curl git-lite
+# nano /etc/rc.conf
 # /usr/local/etc/rc.d/postgresql initdb
 # su pgsql
 $ cd ~
@@ -6,32 +7,41 @@ $ /usr/local/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
 $ createdb hipparchiaDB
 $ psql hipparchiaDB
 
-[generate_hipparchia_dbs.sql]
+[insert sql via generate_hipparchia_dbs.sql]
+[need two roles (hippa_wr & hippa_rd) and authors and works tables]
 
 $ exit
 
 # visudo [and add huser]
 
-$ mkdir venv logs run
-$ nano uwsgi.ini
-$ nano selfupdate.sh
-$ sudo nano /usr/local/etc/nginx/nginx.conf
-$ sudo nano /usr/local/etc/circusd.ini
-$ sudo nano /usr/local/etc/rc.d/circusd
-$ sudo cp ~/venv/bin/circusd /usr/local/bin/circusd
-$ nano ~/venv/HipparchiaServer/config.py
-$ nano ~/venv/HipparchiaBuilder/config.ini
+mkdir venv logs run
+nano uwsgi.ini
+nano selfupdate.sh
+sudo nano /usr/local/etc/nginx/nginx.conf
+sudo nano /usr/local/etc/circusd.ini
+sudo nano /usr/local/etc/rc.d/circusd
 
-$ cd venv
-$ mkdir HipparchiaData HipparchiaServer HipparchiaSQLoader HipparchiaBuilder
-$ cd HipparchiaServer/ && git init
-$ cd HipparchiaBuilder/ && git init
-$ cd HipparchiaSQLoader/ && git init
-$ ln -s venv/bin/circusctl ~/
+/usr/local/bin/pyvenv-3.5 ~/venv/
+source venv/bin/activate.csh
+pip install bs4 circus flask flask_wtf psycopg2 uWSGI
+
+cd venv
+mkdir HipparchiaData HipparchiaServer HipparchiaSQLoader HipparchiaBuilder
+cd HipparchiaServer/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git
+cd HipparchiaBuilder/ && git init && git pull https://github.com/e-gun/HipparchiaBuilder.git
+cd HipparchiaSQLoader/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git
+ln -s venv/bin/circusctl ~/
+
+sudo cp ~/venv/bin/circusd /usr/local/bin/circusd
+nano ~/venv/HipparchiaServer/config.py
+nano ~/venv/HipparchiaBuilder/config.ini
+
 
 [install jquery and fonts in ~/venv/HipparchiaServer/server/static/]
 [copy the relevant data into HipparchiaData]
 [load/build]
+	[make sure buildauthors = True; buildlex = True; buildgram = True]
+	cd ~/venv/HipparchiaBuilder && python build_it_all.py
 [reboot]
 
 

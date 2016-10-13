@@ -1,11 +1,5 @@
 #!/bin/sh
 
-#curl http://antisigma.classics.utoronto.ca/hipp/hb.tgz > ~/venv/hb.tgz
-#curl http://antisigma.classics.utoronto.ca/hipp/hs.tgz > ~/venv/hs.tgz
-#cd ~/venv/
-#tar zvxf ./hb.tgz
-#tar zvxf ./hs.tgz
-
 # to kill local changes
 # git fetch --all
 # git reset --hard master
@@ -18,5 +12,4 @@ cd ~/venv/HipparchiaSQLoader/
 git pull https://github.com/e-gun/HipparchiaSQLoader.git
 cd ~
 
-# ~/circusctl stop && sleep 2 && ~/circusctl start
 ~/circusctl restart
