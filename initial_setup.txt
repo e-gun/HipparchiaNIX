@@ -1,8 +1,11 @@
+
 [log in as huser]
 
 su root
 	root# pkg install nano nginx python35 rsync sudo postgresql95-server curl git-lite
 	root# visudo [and add huser]
+	root# printf "\033[31mHipparchia Server\033[0m" > /etc/issue
+	root# printf "\n\n\t\tWelcome to \033[31mHipparchia Server\033[0m\n\n\n” > /etc/motd
 	root# exit
 
 mkdir venv logs run
@@ -95,4 +98,21 @@ tornado (4.4.2)
 uWSGI (2.0.14)
 Werkzeug (0.11.11)
 WTForms (2.1)
+
+
+Build took 134.39 minutes
+[venv] huser@hipparchia-bsd:~/venv/HipparchiaBuilder % df -h
+Filesystem            Size    Used   Avail Capacity  Mounted on
+zroot/ROOT/default    3.7G    3.4G    269M    93%    /
+devfs                 1.0K    1.0K      0B   100%    /dev
+zroot/tmp             269M    112K    269M     0%    /tmp
+zroot/usr/home        902M    633M    269M    70%    /usr/home
+zroot/usr/ports       269M     96K    269M     0%    /usr/ports
+zroot/usr/src         269M     96K    269M     0%    /usr/src
+zroot/var/audit       269M     96K    269M     0%    /var/audit
+zroot/var/crash       269M     96K    269M     0%    /var/crash
+zroot/var/log         269M    144K    269M     0%    /var/log
+zroot/var/mail        269M     96K    269M     0%    /var/mail
+zroot/var/tmp         269M     96K    269M     0%    /var/tmp
+zroot                 269M     96K    269M     0%    /zroot
 
