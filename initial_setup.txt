@@ -5,7 +5,7 @@ su root
 	root# pkg install nano nginx python35 rsync sudo postgresql95-server curl git-lite
 	root# visudo [and add huser]
 	root# printf "\033[31mHipparchia Server\033[0m" > /etc/issue
-	root# printf "\n\n\t\tWelcome to \033[31mHipparchia Server\033[0m\n\n\n” > /etc/motd
+	root# printf "\n\n\t\tWelcome to \033[31mHipparchia Server\033[0m\n\n\n" > /etc/motd
 	root# exit
 
 mkdir venv logs run
@@ -15,6 +15,10 @@ cd ~/venv/HipparchiaBuilder/ && git init && git pull https://github.com/e-gun/Hi
 cd ~/venv/HipparchiaSQLoader/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git
 cd ~/venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git
 
+sudo su root
+	root# cat ~huser/venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
+	root# nano /usr/local/pgsql/data/postgresql.conf [shared_buffers = 256MB]
+	root# exit
 sudo /usr/local/etc/rc.d/postgresql initdb
 sudo su pgsql
 	pgsql$ cd ~
@@ -33,11 +37,11 @@ sudo cp ~/venv/HipparchiaBSD/ngingx_conf.txt /usr/local/etc/nginx/nginx.conf
 sudo cp ~/venv/HipparchiaBSD/circusd.ini /usr/local/etc/circusd.ini
 sudo cp ~/venv/HipparchiaBSD/circusd /usr/local/etc/rc.d/circusd
 sudo cp ~/venv/HipparchiaBSD/pf_conf.txt /etc/pf.conf
-sudo cat ~/venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
+
 
 /usr/local/bin/pyvenv-3.5 ~/venv/
 source ~/venv/bin/activate.csh
-pip install bs4 circus flask flask_wtf psycopg2 uWSGI
+pip install bs4 circus flask psycopg2 uWSGI
 
 ln -s venv/bin/circusctl ~/
 sudo cp ~/venv/bin/circusd /usr/local/bin/circusd
