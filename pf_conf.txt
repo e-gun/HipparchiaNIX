@@ -1,7 +1,4 @@
-ext_if="em0"
-
-# tcp_services="{ 22, 80}"
-tcp_services="{ 22, 80, 5000}"
+tcp_services="{ 22, 80}"
 
 icmp_types="echoreq"
 
@@ -12,6 +9,10 @@ set block-policy return
 
 set skip on lo
 scrub in all
+
+# uncomment to make flask @ 127.0.0.:5000 into the server
+# tcp_services="{ 22, 80, 5000}"
+# rdr pass on $ext_if proto tcp from $vboxhost to any port http -> 127.0.0.1 port 5000
 
 ###
 ### Core rules
