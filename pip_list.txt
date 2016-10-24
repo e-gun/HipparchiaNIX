@@ -1,25 +1,4 @@
 % /usr/local/bin/pyvenv-3.5 ~/venv/
 % source venv/bin/activate.csh
-% pip install bs4 circus flask flask_wtf psycopg2 uWSGI
+% pip install bs4 circus flask psycopg2 uWSGI
 
-huser@hipparchia:~/logs % pip list
-beautifulsoup4 (4.5.1)
-bs4 (0.0.1)
-circus (0.14.0)
-click (6.6)
-Flask (0.11.1)
-Flask-WTF (0.12)
-iowait (0.2)
-itsdangerous (0.24)
-Jinja2 (2.8)
-MarkupSafe (0.23)
-pip (8.1.2)
-psutil (4.3.0)
-psycopg2 (2.6.2)
-pyzmq (15.4.0)
-setuptools (20.10.1)
-tornado (4.4.1)
-uWSGI (2.0.13.1)
-Werkzeug (0.11.10)
-WTForms (2.1)
-huser@hipparchia:~/logs %

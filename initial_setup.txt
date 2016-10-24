@@ -17,14 +17,13 @@ cd ~/venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/Hippar
 
 sudo su root
 	root# cat ~huser/venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
+	root# /usr/local/etc/rc.d/postgresql initdb
 	root# nano /usr/local/pgsql/data/postgresql.conf [shared_buffers = 256MB]
 	root# exit
-sudo /usr/local/etc/rc.d/postgresql initdb
+
 sudo su pgsql
-	pgsql$ cd ~
-	pgsql$ /usr/local/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
-	pgsql$ createdb hipparchiaDB
-	pgsql$ psql hipparchiaDB
+	pgsql$ cd ~ && /usr/local/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
+	pgsql$ createdb hipparchiaDB && psql hipparchiaDB
 		[insert sql via generate_hipparchia_dbs.sql]
 		[need two roles (hippa_wr & hippa_rd) and authors and works tables]
 	pgsql$ exit
@@ -51,6 +50,10 @@ cp ~/venv/HipparchiaBuilder/config.ini ~/venv/HipparchiaSQLoader/config.ini
 
 [install jquery and fonts in ~/venv/HipparchiaServer/server/static/]
 [copy the relevant data into HipparchiaData]
+	e.g. 
+	scp -rp greek latin lexica huser@192.168.1.16:/usr/home/huser/venv/HipparchiaData
+	- OR - 
+	scp -rp sqldumps huser@192.168.1.16:/usr/home/huser/venv/HipparchiaData
 [load/build]
 	[make sure buildauthors = True; buildlex = True; buildgram = True]
 	cd ~/venv/HipparchiaBuilder && python build_it_all.py

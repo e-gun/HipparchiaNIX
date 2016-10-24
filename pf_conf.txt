@@ -1,6 +1,8 @@
 ext_if="em0"
 
-tcp_services="{ 22, 80}"
+# tcp_services="{ 22, 80}"
+tcp_services="{ 22, 80, 5000}"
+
 icmp_types="echoreq"
 
 #vboxhost="10.0.2.2"
