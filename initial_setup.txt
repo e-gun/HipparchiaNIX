@@ -42,7 +42,8 @@ sudo cp ~/venv/HipparchiaBSD/pf_conf.txt /etc/pf.conf
 source ~/venv/bin/activate.csh
 pip install bs4 circus flask psycopg2 uWSGI
 
-ln -s venv/bin/circusctl ~/
+ln -s venv/bin/circusctl ~/circusctl
+ln -s /usr/local/etc/circusd.ini ~/the_circusd.ini
 sudo cp ~/venv/bin/circusd /usr/local/bin/circusd
 nano ~/venv/HipparchiaServer/config.py
 nano ~/venv/HipparchiaBuilder/config.ini
