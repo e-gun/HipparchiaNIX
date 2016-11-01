@@ -14,6 +14,7 @@ brew services start postgresql
 # build the db framework
 createdb hipparchiaDB
 psql hipparchiaDB
+
 #	[insert from ~/hipparchia_venv/HipparchiaBuilder/builder/sql/sample_generate_hipparchia_dbs.sql]
 #	[set passwords for your two DB roles: please pick strong/hard gibberish passwords like "IQY%gOd$)&KV" ]
 #	\password hippa_wr
@@ -29,6 +30,10 @@ cd ~/hipparchia_venv/HipparchiaSQLoader/ && git init && git pull https://github.
 cd ~/hipparchia_venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git
 cp ~/hipparchia_venv/HipparchiaBSD/macOS_selfupdate.sh ~/hipparchia_venv/selfupdate.sh
 chmod 700 ~/hipparchia_venv/selfupdate.sh
+cp ~/hipparchia_venv/HipparchiaBSD/macos_launch_hipparchia_application.zip ~/hipparchia_venv
+cd ~/hipparchia_venv
+unzip ~/hipparchia_venv/macos_launch_hipparchia_application.zip
+mv ~/hipparchia_venv/macos_launch_hipparchia_application.app ~/hipparchia_venv/launch_hipparchia.app
 
 # prepare the python virtual environment
 /usr/local/bin/pyvenv-3.5 ~/hipparchia_venv/
@@ -54,7 +59,12 @@ cp ~/hipparchia_venv/HipparchiaBuilder/config.ini ~/hipparchia_venv/HipparchiaSQ
 cd ~/hipparchia_venv/HipparchiaBuilder && ~/hipparchia_venv/bin/python3 build_it_all.py
 
 # when the build finishes you should be ready to run
-~/hipparchia_venv/bin/python3 ~/hipparchia_venv/HipparchiaServer/run.py
+# via the Terminal.app:
+#~/hipparchia_venv/bin/python3 ~/hipparchia_venv/HipparchiaServer/run.py
+# via the supplied script: you can double-click it or tell the terminal the following
+# you can move launch_hipparchia.app anywhere you want
+# you can't move ~/hipparchia_venv unless you are willing to tinker with various settings
+open ~/hipparchia_venv/launch_hipparchia.app
 
 # you should see something like:
 
