@@ -1,3 +1,8 @@
+# this will do a complete macOS installation
+# it is an abbreviated and slightly modified version of a FreeBSD installation
+# you can cut and paste most of the document safely into the terminal: comments will be ignored
+# but there are points where you are required to take action, so pasting the whole document at once would be bad
+
 # open Terminal.app from the /Applications/Utilities folder
  
 # from the command line: 
