@@ -2,7 +2,7 @@
 [log in as huser]
 
 su root
-	root# pkg install nano nginx python35 rsync sudo postgresql95-server curl git-lite
+	root# pkg install nano nginx python35 rsync sudo postgresql95-server postgresql95-contrib curl git-lite
 	root# visudo [and add huser]
 	root# printf "\033[31mHipparchia Server\033[0m" > /etc/issue
 	root# printf "\n\n\t\tWelcome to \033[31mHipparchia Server\033[0m\n\n\n" > /etc/motd
