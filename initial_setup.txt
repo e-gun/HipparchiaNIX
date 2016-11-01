@@ -8,12 +8,12 @@ su root
 	root# printf "\n\n\t\tWelcome to \033[31mHipparchia Server\033[0m\n\n\n" > /etc/motd
 	root# exit
 
-mkdir venv logs run
-mkdir ~/venv/HipparchiaData ~/venv/HipparchiaServer ~/venv/HipparchiaSQLoader ~/venv/HipparchiaBuilder ~/venv/HipparchiaBSD
-cd ~/venv/HipparchiaServer/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git
-cd ~/venv/HipparchiaBuilder/ && git init && git pull https://github.com/e-gun/HipparchiaBuilder.git
-cd ~/venv/HipparchiaSQLoader/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git
-cd ~/venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git
+mkdir ~/hipparchia_venv logs run
+mkdir ~/hipparchia_venv/HipparchiaData ~/hipparchia_venv/HipparchiaServer ~/hipparchia_venv/HipparchiaSQLoader ~/hipparchia_venv/HipparchiaBuilder ~/hipparchia_venv/HipparchiaBSD
+cd ~/hipparchia_venv/HipparchiaServer/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git
+cd ~/hipparchia_venv/HipparchiaBuilder/ && git init && git pull https://github.com/e-gun/HipparchiaBuilder.git
+cd ~/hipparchia_venv/HipparchiaSQLoader/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git
+cd ~/hipparchia_venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git
 
 sudo su root
 	root# cat ~huser/venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
@@ -28,28 +28,28 @@ sudo su pgsql
 		[need two roles (hippa_wr & hippa_rd) and authors and works tables]
 	pgsql$ exit
 
-cp ~/venv/HipparchiaBSD/uwsgi.ini ~/uwsgi.ini
-cp ~/venv/HipparchiaBSD/selfupdate.sh ~/selfupdate.sh
-cp ~/venv/HipparchiaBSD/cshrc.txt ~/.cshrc
+cp ~/hipparchia_venv/HipparchiaBSD/uwsgi.ini ~/uwsgi.ini
+cp ~/hipparchia_venv/HipparchiaBSD/selfupdate.sh ~/selfupdate.sh
+cp ~/hipparchia_venv/HipparchiaBSD/cshrc.txt ~/.cshrc
 source ~/.cshrc 
-sudo cp ~/venv/HipparchiaBSD/ngingx_conf.txt /usr/local/etc/nginx/nginx.conf
-sudo cp ~/venv/HipparchiaBSD/circusd.ini /usr/local/etc/circusd.ini
-sudo cp ~/venv/HipparchiaBSD/circusd /usr/local/etc/rc.d/circusd
-sudo cp ~/venv/HipparchiaBSD/pf_conf.txt /etc/pf.conf
+sudo cp ~/hipparchia_venv/HipparchiaBSD/ngingx_conf.txt /usr/local/etc/nginx/nginx.conf
+sudo cp ~/hipparchia_venv/HipparchiaBSD/circusd.ini /usr/local/etc/circusd.ini
+sudo cp ~/hipparchia_venv/HipparchiaBSD/circusd /usr/local/etc/rc.d/circusd
+sudo cp ~/hipparchia_venv/HipparchiaBSD/pf_conf.txt /etc/pf.conf
 
 
-/usr/local/bin/pyvenv-3.5 ~/venv/
-source ~/venv/bin/activate.csh
+/usr/local/bin/pyvenv-3.5 ~/hipparchia_venv/
+source ~/hipparchia_venv/bin/activate.csh
 pip install bs4 circus flask psycopg2 uWSGI
 
 ln -s venv/bin/circusctl ~/circusctl
 ln -s /usr/local/etc/circusd.ini ~/the_circusd.ini
-sudo cp ~/venv/bin/circusd /usr/local/bin/circusd
-nano ~/venv/HipparchiaServer/config.py
-nano ~/venv/HipparchiaBuilder/config.ini
-cp ~/venv/HipparchiaBuilder/config.ini ~/venv/HipparchiaSQLoader/config.ini
+sudo cp ~/hipparchia_venv/bin/circusd /usr/local/bin/circusd
+nano ~/hipparchia_venv/HipparchiaServer/config.py
+nano ~/hipparchia_venv/HipparchiaBuilder/config.ini
+cp ~/hipparchia_venv/HipparchiaBuilder/config.ini ~/hipparchia_venv/HipparchiaSQLoader/config.ini
 
-[install jquery and fonts in ~/venv/HipparchiaServer/server/static/]
+[install jquery and fonts in ~/hipparchia_venv/HipparchiaServer/server/static/]
 [copy the relevant data into HipparchiaData]
 	e.g. 
 	scp -rp greek latin lexica huser@192.168.1.16:/usr/home/huser/venv/HipparchiaData
@@ -57,9 +57,9 @@ cp ~/venv/HipparchiaBuilder/config.ini ~/venv/HipparchiaSQLoader/config.ini
 	scp -rp sqldumps huser@192.168.1.16:/usr/home/huser/venv/HipparchiaData
 [load/build]
 	[make sure buildauthors = True; buildlex = True; buildgram = True]
-	cd ~/venv/HipparchiaBuilder && python build_it_all.py
+	cd ~/hipparchia_venv/HipparchiaBuilder && python build_it_all.py
 	— OR —
-	cd ~/venv/HipparchiaSQLoader && python reloadhipparchiaDBs.py
+	cd ~/hipparchia_venv/HipparchiaSQLoader && python reloadhipparchiaDBs.py
 [reboot]
 
 
@@ -109,7 +109,7 @@ WTForms (2.1)
 
 
 Build took 134.39 minutes
-[venv] huser@hipparchia-bsd:~/venv/HipparchiaBuilder % df -h
+[venv] huser@hipparchia-bsd:~/hipparchia_venv/HipparchiaBuilder % df -h
 Filesystem            Size    Used   Avail Capacity  Mounted on
 zroot/ROOT/default    3.7G    3.4G    269M    93%    /
 devfs                 1.0K    1.0K      0B   100%    /dev
