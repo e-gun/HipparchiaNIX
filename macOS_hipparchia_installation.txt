@@ -60,13 +60,15 @@ cd ~/hipparchia_venv/HipparchiaBuilder && ~/hipparchia_venv/bin/python3 build_it
 
 # when the build finishes you should be ready to run
 # via the Terminal.app:
-#~/hipparchia_venv/bin/python3 ~/hipparchia_venv/HipparchiaServer/run.py
+# ~/hipparchia_venv/bin/python3 ~/hipparchia_venv/HipparchiaServer/run.py
 # via the supplied script: you can double-click it or tell the terminal the following
-# you can move launch_hipparchia.app anywhere you want
-# you can't move ~/hipparchia_venv unless you are willing to tinker with various settings
+
 open ~/hipparchia_venv/launch_hipparchia.app
 
-# you should see something like:
+# you can move launch_hipparchia.app anywhere you want
+# you can't move ~/hipparchia_venv unless you are willing to tinker with various settings
+
+# after launching you should see something like:
 
 #loading authors and works...
 # * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
