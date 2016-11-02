@@ -1,4 +1,3 @@
-
 # [log in as huser]
 
 su root
@@ -68,7 +67,7 @@ cp ~/hipparchia_venv/HipparchiaBuilder/config.ini ~/hipparchia_venv/HipparchiaSQ
 
 ===
 
-[venv] huser@hipparchia-bsd:~ % pkg info
+huser@hipparchia-server:~ % pkg info
 ca_root_nss-3.27               Root certificate bundle from the Mozilla Project
 curl-7.50.3                    Non-interactive tool to get files from FTP, GOPHER, HTTP(S) servers
 expat-2.2.0                    XML 1.0 parser written in C
@@ -76,26 +75,32 @@ gettext-runtime-0.19.8.1       GNU gettext runtime libraries and programs
 git-lite-2.9.2_2               Distributed source code management tool (lite package)
 indexinfo-0.2.5                Utility to regenerate the GNU info page index
 libffi-3.2.1                   Foreign Function Interface
+libgcrypt-1.7.3                General purpose crypto library based on code used in GnuPG
+libgpg-error-1.24              Common error values for all GnuPG components
 libxml2-2.9.4                  XML parser library for GNOME
+libxslt-1.1.29                 The XSLT C library for GNOME
 nano-2.7.0                     Nano's ANOther editor, an enhanced free Pico clone
 nginx-1.10.1_2,2               Robust and small WWW server
 pcre-8.39                      Perl Compatible Regular Expressions library
 perl5-5.20.3_15                Practical Extraction and Report Language
 pkg-1.8.7_3                    Package manager
 postgresql95-client-9.5.4_1    PostgreSQL database (client)
+postgresql95-contrib-9.5.4     The contrib utilities from the PostgreSQL distribution
 postgresql95-server-9.5.4_1    The most advanced open-source database available anywhere
+pypy3-5.2.0.a1                 Fast, compliant implementation of the Python language
 python35-3.5.2                 Interpreted object-oriented programming language
 readline-6.3.8                 Library for editing command lines as they are typed
 rsync-3.1.2_5                  Network file distribution/synchronization utility
 sudo-1.8.18                    Allow others to run commands as root
 
-[venv] huser@hipparchia-bsd:~ % pip list
+huser@hipparchia-server:~ % ~/venv/bin/pip list
 beautifulsoup4 (4.5.1)
 bs4 (0.0.1)
 circus (0.14.0)
 click (6.6)
 Flask (0.11.1)
-Flask-WTF (0.13.1)
+gevent (1.1.2)
+greenlet (0.4.10)
 iowait (0.2)
 itsdangerous (0.24)
 Jinja2 (2.8)
@@ -108,22 +113,7 @@ setuptools (20.10.1)
 tornado (4.4.2)
 uWSGI (2.0.14)
 Werkzeug (0.11.11)
-WTForms (2.1)
 
 
-Build took 134.39 minutes
-[venv] huser@hipparchia-bsd:~/hipparchia_venv/HipparchiaBuilder % df -h
-Filesystem            Size    Used   Avail Capacity  Mounted on
-zroot/ROOT/default    3.7G    3.4G    269M    93%    /
-devfs                 1.0K    1.0K      0B   100%    /dev
-zroot/tmp             269M    112K    269M     0%    /tmp
-zroot/usr/home        902M    633M    269M    70%    /usr/home
-zroot/usr/ports       269M     96K    269M     0%    /usr/ports
-zroot/usr/src         269M     96K    269M     0%    /usr/src
-zroot/var/audit       269M     96K    269M     0%    /var/audit
-zroot/var/crash       269M     96K    269M     0%    /var/crash
-zroot/var/log         269M    144K    269M     0%    /var/log
-zroot/var/mail        269M     96K    269M     0%    /var/mail
-zroot/var/tmp         269M     96K    269M     0%    /var/tmp
-zroot                 269M     96K    269M     0%    /zroot
+
 
