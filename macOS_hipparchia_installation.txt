@@ -9,6 +9,10 @@
 # install the brew package manager
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
+# this might fail because of a problem grabbing the command line tools for macOS
+# plan b: type 'gcc' at the command line and macOS will try to acquire the tools for you
+# plan c: you manually download XCode from the App Store (for free) and try again
+
 # install python and postgresql
 brew install python3
 brew install postgresql
@@ -16,11 +20,13 @@ brew install postgresql
 # postgresql will be available every time you restart
 brew services start postgresql
 
+# you may have to tell your firewall to let postgresql accept connections
+
 # build the db framework
-createdb hipparchiaDB
+createdb -E UTF8 hipparchiaDB
+psql -d hipparchiaDB -a -f ~/hipparchia_venv/HipparchiaBuilder/builder/sql/sample_generate_hipparchia_dbs.sql
 psql hipparchiaDB
 
-#	[insert from ~/hipparchia_venv/HipparchiaBuilder/builder/sql/sample_generate_hipparchia_dbs.sql]
 #	[set passwords for your two DB roles: please pick strong/hard gibberish passwords like "IQY%gOd$)&KV" ]
 #	\password hippa_wr
 #	\password hippa_rd
@@ -39,6 +45,7 @@ cp ~/hipparchia_venv/HipparchiaBSD/macos_launch_hipparchia_application.zip ~/hip
 cd ~/hipparchia_venv
 unzip ~/hipparchia_venv/macos_launch_hipparchia_application.zip
 mv ~/hipparchia_venv/macos_launch_hipparchia_application.app ~/hipparchia_venv/launch_hipparchia.app
+rm -rf ~/hipparchia_venv/__MACOSX macos_launch_hipparchia_application.zip
 
 # prepare the python virtual environment
 /usr/local/bin/pyvenv-3.5 ~/hipparchia_venv/
