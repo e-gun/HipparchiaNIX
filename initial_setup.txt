@@ -1,5 +1,5 @@
 
-[log in as huser]
+# [log in as huser]
 
 su root
 	root# pkg install nano nginx python35 rsync sudo postgresql95-server postgresql95-contrib curl git-lite
@@ -24,8 +24,11 @@ sudo su root
 sudo su pgsql
 	pgsql$ cd ~ && /usr/local/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
 	pgsql$ createdb hipparchiaDB && psql hipparchiaDB
-		[insert sql via generate_hipparchia_dbs.sql]
-		[need two roles (hippa_wr & hippa_rd) and authors and works tables]
+		# [insert sql via generate_hipparchia_dbs.sql]
+		# [but for the ownership problems it is: psql -d hipparchiaDB -a -f ~/hipparchia_venv/HipparchiaBuilder/builder/sql/sample_generate_hipparchia_dbs.sql]
+		# [need two roles (hippa_wr & hippa_rd) and authors and works tables]
+			#	\password hippa_wr
+			#	\password hippa_rd
 	pgsql$ exit
 
 cp ~/hipparchia_venv/HipparchiaBSD/uwsgi.ini ~/uwsgi.ini
@@ -49,18 +52,18 @@ nano ~/hipparchia_venv/HipparchiaServer/config.py
 nano ~/hipparchia_venv/HipparchiaBuilder/config.ini
 cp ~/hipparchia_venv/HipparchiaBuilder/config.ini ~/hipparchia_venv/HipparchiaSQLoader/config.ini
 
-[install jquery and fonts in ~/hipparchia_venv/HipparchiaServer/server/static/]
-[copy the relevant data into HipparchiaData]
+# [install jquery and fonts in ~/hipparchia_venv/HipparchiaServer/server/static/]
+# [copy the relevant data into HipparchiaData]
 	e.g. 
 	scp -rp greek latin lexica huser@192.168.1.16:/usr/home/huser/venv/HipparchiaData
 	- OR - 
 	scp -rp sqldumps huser@192.168.1.16:/usr/home/huser/venv/HipparchiaData
-[load/build]
-	[make sure buildauthors = True; buildlex = True; buildgram = True]
+#[load/build]
+#	[make sure buildauthors = True; buildlex = True; buildgram = True]
 	cd ~/hipparchia_venv/HipparchiaBuilder && python build_it_all.py
 	— OR —
 	cd ~/hipparchia_venv/HipparchiaSQLoader && python reloadhipparchiaDBs.py
-[reboot]
+# [reboot]
 
 
 ===
