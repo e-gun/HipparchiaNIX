@@ -43,9 +43,7 @@ cp ~/hipparchia_venv/HipparchiaBSD/macOS_selfupdate.sh ~/hipparchia_venv/selfupd
 chmod 700 ~/hipparchia_venv/selfupdate.sh
 cp ~/hipparchia_venv/HipparchiaBSD/macos_launch_hipparchia_application.zip ~/hipparchia_venv
 cd ~/hipparchia_venv
-unzip ~/hipparchia_venv/macos_launch_hipparchia_application.zip
 mv ~/hipparchia_venv/macos_launch_hipparchia_application.app ~/hipparchia_venv/launch_hipparchia.app
-rm -rf ~/hipparchia_venv/__MACOSX macos_launch_hipparchia_application.zip
 
 # prepare the python virtual environment
 /usr/local/bin/pyvenv-3.5 ~/hipparchia_venv/
