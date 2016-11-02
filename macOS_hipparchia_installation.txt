@@ -41,7 +41,7 @@ cd ~/hipparchia_venv/HipparchiaSQLoader/ && git init && git pull https://github.
 cd ~/hipparchia_venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git
 cp ~/hipparchia_venv/HipparchiaBSD/macOS_selfupdate.sh ~/hipparchia_venv/selfupdate.sh
 chmod 700 ~/hipparchia_venv/selfupdate.sh
-cp ~/hipparchia_venv/HipparchiaBSD/macos_launch_hipparchia_application.zip ~/hipparchia_venv
+cp ~/hipparchia_venv/HipparchiaBSD/macOS_launch_hipparchia_application.zip ~/hipparchia_venv
 cd ~/hipparchia_venv
 mv ~/hipparchia_venv/macos_launch_hipparchia_application.app ~/hipparchia_venv/launch_hipparchia.app
 
