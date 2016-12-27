@@ -81,3 +81,13 @@ open ~/hipparchia_venv/launch_hipparchia.app
 #loading authors and works...
 # * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 # * Restarting with stat
+
+# keeping up to date:
+# 	from the terminal run
+# 	~/hipparchia_venv/selfupdate.sh
+# WARNING
+# please note that it is possible that the latest version of HipparchiaServer requires DBs built with 
+# a version of HipparchiaBuilder that did not build the DBs you have installed
+# in short an update can break your installation unless you have access to the build data or freshly built DBs
+# some sort of versioning mechanism needs to be implemented
+# at the moment Hipparchia is still in active development and the DB templates seem not to be as stable as they could be
