@@ -26,8 +26,6 @@ brew install postgresql
 # postgresql will be available every time you restart (you almost certainly want this if you plan to use hipparchia regularly)
 brew services start postgresql
 
-# you may have to tell your firewall to let postgresql accept connections
-
 # ready the installation files and directories
 # cut-and-paste this block with abandon
 mkdir ~/hipparchia_venv
@@ -132,13 +130,18 @@ open http://localhost:5000
 # this port on your machine.
 #
 # There are plenty of security checks inside HipparchiaServer, but you just chose to 
-# skip a critical piece of the security puzzle. So I can't feel that bad if I missed something 
+# skip a critical piece of the security puzzle. So I refuse to feel that bad if I missed something 
 # in my code since you did not do your part either.
 #
 # If you have no firewall and picked a terrible password for hippa_wr, then you
 # must be the sort of person who loves international adventure and fun games like
 # running with scissors. They play the coolest kind of roulette in Russia, I am told.
 
+# postgresql is also a server, and it does not need to grant access to anyone other than localhost 
+# if anyone other than localhost can get to you at port 5432 then something is misconfigured
+# postgresql.conf is supposed to set: listen_addresses = 'localhost' 
+# i.e., firewalling postgresql is superfluous because it should reject everyone anyway. But feel
+# free to firewall it too. All ports that do not have to be open should be kept closed.
 
 # KEEPING UP TO DATE:
 # 	from the terminal run
