@@ -129,9 +129,9 @@ open http://localhost:5000
 # I cannot recommend strongly enough that you have some sort of protection for 
 # this port on your machine.
 #
-# There are plenty of security checks inside HipparchiaServer, but you just chose to 
-# skip a critical piece of the security puzzle. So I refuse to feel that bad if I missed something 
-# in my code since you did not do your part either.
+# There are plenty of security checks inside HipparchiaServer, but if you just chose to 
+# skip a critical piece of the security puzzle, then I refuse to feel that bad if I missed something 
+# in my code. You did not do your part either.
 #
 # If you have no firewall and picked a terrible password for hippa_wr, then you
 # must be the sort of person who loves international adventure and fun games like
