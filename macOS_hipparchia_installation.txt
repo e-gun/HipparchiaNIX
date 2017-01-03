@@ -10,6 +10,7 @@
 # from the command line: 
 
 # test that you have the command lines tools available:
+
 gcc
 
 # success - you will see this message: 'clang: error: no input files'
@@ -17,17 +18,21 @@ gcc
 # if *that* does not work: you manually download XCode from the App Store (for free), install, and try again
 
 # install the brew package manager
+
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # install python and postgresql
+
 brew install python3
 brew install postgresql
 
 # postgresql will be available every time you restart (you almost certainly want this if you plan to use hipparchia regularly)
+
 brew services start postgresql
 
 # ready the installation files and directories
 # cut-and-paste this block with abandon
+
 mkdir ~/hipparchia_venv
 mkdir ~/hipparchia_venv/HipparchiaData ~/hipparchia_venv/HipparchiaServer ~/hipparchia_venv/HipparchiaSQLoader ~/hipparchia_venv/HipparchiaBuilder ~/hipparchia_venv/HipparchiaBSD
 cd ~/hipparchia_venv/HipparchiaServer/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git
@@ -39,10 +44,12 @@ chmod 700 ~/hipparchia_venv/selfupdate.sh
 cp -rp ~/hipparchia_venv/HipparchiaBSD/macos_launch_hipparchia_application.app ~/hipparchia_venv/launch_hipparchia.app
 
 # build the db framework
+
 createdb -E UTF8 hipparchiaDB
 psql -d hipparchiaDB -a -f ~/hipparchia_venv/HipparchiaBuilder/builder/sql/sample_generate_hipparchia_dbs.sql
 
 # you are about to enter the SQL shell: time to sit up and take notice of these comments
+
 psql hipparchiaDB
 
 # this next bit can't be done with cut-and-paste: you have to read and follow the instructions
@@ -53,6 +60,7 @@ psql hipparchiaDB
 #	\q
 
 # prepare the python virtual environment
+
 /usr/local/bin/python3.6 -m venv ~/hipparchia_venv/
 source ~/hipparchia_venv/bin/activate
 ~/hipparchia_venv/bin/pip3 install bs4 flask psycopg2
@@ -63,6 +71,7 @@ cp ~/hipparchia_venv/HipparchiaServer/sample_config.py ~/hipparchia_venv/Hipparc
 # this next bit can't be done with cut-and-paste: you have to read and follow the instructions
 # edit your configuration files: the passwords for hippa_wr and hippa_rd are the key bit
 # they must match what you entered after you did '\password hippa_wr' and '\password hippa_rd' above
+
 open -a /Applications/TextEdit.app ~/hipparchia_venv/HipparchiaServer/config.py
 open -a /Applications/TextEdit.app ~/hipparchia_venv/HipparchiaBuilder/config.ini
 open -a /Applications/TextEdit.app ~/hipparchia_venv/HipparchiaSQLoader/config.ini
@@ -74,6 +83,7 @@ cp ~/hipparchia_venv/HipparchiaBuilder/config.ini ~/hipparchia_venv/HipparchiaSQ
 #	http://jquery.com/download/
 #	http://dejavu-fonts.org/wiki/Download
 # [to see the folder where the downloads need to go]
+
 open ~/hipparchia_venv/HipparchiaServer/server/static/
 
 # here comes the SHOWSTOPPER moment if you are going to be a HipparchiaBuilder
@@ -84,6 +94,7 @@ open ~/hipparchia_venv/HipparchiaServer/server/static/
 
 # OPTION ONE: BE BUILDER
 # if you have the builder data, then...
+
 cd ~/hipparchia_venv/HipparchiaBuilder && ~/hipparchia_venv/bin/python3 build_it_all.py
 
 # build times vary, but 10-40m per corpus should be possible on most machines. 
@@ -91,15 +102,18 @@ cd ~/hipparchia_venv/HipparchiaBuilder && ~/hipparchia_venv/bin/python3 build_it
 
 # OPTION TWO: BE A RELOADER
 # if you have access to a HipparchiaSQLoader dump, then...
+
 # cd ~/hipparchia_venv/HipparchiaSQLoader/ && ../bin/python ./reloadhipparchiaDBs.py 
 
 # CONGRATULATIONS: Hipparchia's data has been installed
 # you are now ready to run HipparchiaServer 
 
 # OPTION ONE: via the Terminal.app:
+
 # ~/hipparchia_venv/bin/python3 ~/hipparchia_venv/HipparchiaServer/run.py
 
 # OPTION TWO: via the supplied applescript script: you can double-click it or tell the terminal the following
+
 open ~/hipparchia_venv/launch_hipparchia.app
 
 # you can move launch_hipparchia.app anywhere you want
@@ -116,10 +130,12 @@ open ~/hipparchia_venv/launch_hipparchia.app
 # * Restarting with stat
 
 # if you love the command line then:
+
 open http://localhost:5000
 
 # otherwise you can open any web browser and surf to Hipparchia's front page:
 # 	http://localhost:5000
+# consider bookmarking it
 
 # WARNING
 # HipparchiaServer is a server; and you are now serving on port 5000.
