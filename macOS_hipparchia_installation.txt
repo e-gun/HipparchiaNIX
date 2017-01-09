@@ -69,8 +69,10 @@ cp ~/hipparchia_venv/HipparchiaBuilder/sample_config.ini ~/hipparchia_venv/Hippa
 cp ~/hipparchia_venv/HipparchiaServer/sample_config.py ~/hipparchia_venv/HipparchiaServer/config.py
 
 # this next bit can't be done with cut-and-paste: you have to read and follow the instructions
-# edit your configuration files: the passwords for hippa_wr and hippa_rd are the key bit
+# edit your configuration files: the passwords for hippa_wr and hippa_rd are the key bit ('DBPASS')
 # they must match what you entered after you did '\password hippa_wr' and '\password hippa_rd' above
+# you should also have a long and strong value ready for 'SECRET_KEY' in config.py.
+
 
 open -a /Applications/TextEdit.app ~/hipparchia_venv/HipparchiaServer/config.py
 open -a /Applications/TextEdit.app ~/hipparchia_venv/HipparchiaBuilder/config.ini
