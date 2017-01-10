@@ -51,19 +51,42 @@ nano ~/hipparchia_venv/HipparchiaServer/config.py
 nano ~/hipparchia_venv/HipparchiaBuilder/config.ini
 cp ~/hipparchia_venv/HipparchiaBuilder/config.ini ~/hipparchia_venv/HipparchiaSQLoader/config.ini
 
-# [install jquery and fonts in ~/hipparchia_venv/HipparchiaServer/server/static/]
-# [copy the relevant data into HipparchiaData]
-	e.g. 
-	scp -rp greek latin lexica huser@192.168.1.16:/usr/home/huser/venv/HipparchiaData
-	- OR - 
-	scp -rp sqldumps huser@192.168.1.16:/usr/home/huser/venv/HipparchiaData
-#[load/build]
-#	[make sure buildauthors = True; buildlex = True; buildgram = True]
-	cd ~/hipparchia_venv/HipparchiaBuilder && python build_it_all.py
-	— OR —
-	cd ~/hipparchia_venv/HipparchiaSQLoader && python reloadhipparchiaDBs.py
-# [reboot]
+# [install jquery, fonts, etc. in ~/hipparchia_venv/HipparchiaServer/server/static/]
 
+curl https://code.jquery.com/jquery-3.1.0.min.js > ~/hipparchia_venv/HipparchiaServer/server/static/jquery-3.1.0.min.js
+curl https://raw.githubusercontent.com/js-cookie/js-cookie/master/src/js.cookie.js > ~/hipparchia_venv/HipparchiaServer/server/static/js.cookie.js
+curl -LOk https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.tar.bz2 > ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37.tar.bz2
+cd ~/hipparchia_venv/HipparchiaServer/server/static/
+tar jxf ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37.tar.bz2
+cp ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37/ttf/*.ttf ~/hipparchia_venv/HipparchiaServer/server/static/ttf/
+curl -LOk http://jqueryui.com/resources/download/jquery-ui-1.12.1.zip ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1.zip
+unzip ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1.zip
+cp ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1/jquery-ui* ~/hipparchia_venv/HipparchiaServer/server/static/
+rm -rf ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37.tar.bz2 ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1.zip ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1/ ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37/
+
+# here comes the SHOWSTOPPER moment if you are going to be a HipparchiaBuilder
+# if you do not have access to the data, then you can't build
+# and this data is not available on github and unlikely ever to be available on github
+# You need access to the TLG_E and PHI00005 and PHI7 disks. Get your hands on them.
+# I do not know if other versions will build. They probably will.  
+
+# OPTION ONE: BE BUILDER
+# if you have the builder data, then...
+
+cd ~/hipparchia_venv/HipparchiaBuilder && ~/hipparchia_venv/bin/python3 ./makecorpora.py
+
+# build times vary, but 10-40m per corpus should be possible on most machines. 
+# 5-25m is achievable if you are a speed freak who knows how to optimize for your rig
+
+# OPTION TWO: BE A RELOADER
+# if you have access to a HipparchiaSQLoader dump, then...
+
+# cd ~/hipparchia_venv/HipparchiaSQLoader/ && ../bin/python ./reloadhipparchiaDBs.py 
+
+# CONGRATULATIONS: Hipparchia's data has been installed
+# you are now ready to run HipparchiaServer 
+
+# [reboot]
 
 ===
 
