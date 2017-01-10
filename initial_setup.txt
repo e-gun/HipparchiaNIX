@@ -62,6 +62,7 @@ cp ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37/ttf/*.
 curl -LOk http://jqueryui.com/resources/download/jquery-ui-1.12.1.zip ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1.zip
 unzip ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1.zip
 cp ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1/jquery-ui* ~/hipparchia_venv/HipparchiaServer/server/static/
+cp ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1/images/*.png ~/hipparchia_venv/HipparchiaServer/server/static/images/
 rm -rf ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37.tar.bz2 ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1.zip ~/hipparchia_venv/HipparchiaServer/server/static/jquery-ui-1.12.1/ ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37/
 
 # here comes the SHOWSTOPPER moment if you are going to be a HipparchiaBuilder
