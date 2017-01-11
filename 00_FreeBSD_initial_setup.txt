@@ -72,12 +72,39 @@ rm -rf ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37.ta
 # I do not know if other versions will build. They probably will.  
 
 # OPTION ONE: BE BUILDER
-# if you have the builder data, then...
+
+# make the datafiles available where config.ini says they will be
+
+# the lexica and grammatical analyses are not officially available anywhere that I know of. This material used to be distributed via the Perseus Hopper. No more?
+# 
+# BUILDING - ACQUIRING THE LEXICA OPTION A:
+# use the files inside of Diogenes
+mkdir ~/hipparchia_venv/HipparchiaData/lexica/
+curl https://community.dur.ac.uk/p.j.heslin/Software/Diogenes/Download/diogenes-linux-3.2.0.tar.bz2 > ~/hipparchia_venv/HipparchiaData/lexica/
+cd ~/hipparchia_venv/HipparchiaData/lexica/
+tar jxf diogenes-linux-3.2.0.tar.bz2
+mv ~/hipparchia_venv/HipparchiaData/lexica/diogenes-3.2.0/diogenes/perl/Perseus_Data/*.* ~/hipparchia_venv/HipparchiaData/lexica/
+rm -rf ~/hipparchia_venv/HipparchiaData/lexica/diogenes-3.2.0/
+mv ~/hipparchia_venv/HipparchiaData/lexica/1999.04.0057.xml ~/hipparchia_venv/HipparchiaData/lexica/greek-lexicon_1999.04.0057.xml
+mv ~/hipparchia_venv/HipparchiaData/lexica/1999.04.0059.xml ~/hipparchia_venv/HipparchiaData/lexica/latin-lexicon_1999.04.0059.xml
+
+# BUILDING - ACQUIRING THE LEXICA OPTION B [incomplete data / no Latin items]: 
+# TLG:
+# curl -LOk https://raw.githubusercontent.com/cltk/greek_lexica_perseus/master/greek_english_lexicon_lsj_1.xml > ~/hipparchia_venv/HipparchiaData/lexica/greek_english_lexicon_lsj_1.xml
+# curl -LOk https://raw.githubusercontent.com/cltk/greek_lexica_perseus/master/greek_english_lexicon_lsj_2.xml > ~/hipparchia_venv/HipparchiaData/lexica/greek_english_lexicon_lsj_2.xml
+# LEMMATA
+# curl -LOk https://raw.githubusercontent.com/cltk/greek_lexica_perseus/master/greek-lemmata.txt > ~/hipparchia_venv/HipparchiaData/lexica/greek-lemmata.txt 
+# ANALYSES
+# curl -LOk https://raw.githubusercontent.com/cltk/greek_lexica_perseus/master/greek-analyses_1.txt > ~/hipparchia_venv/HipparchiaData/lexica/greek-analyses_1.txt
+# curl -LOk https://raw.githubusercontent.com/cltk/greek_lexica_perseus/master/greek-analyses_2.txt > ~/hipparchia_venv/HipparchiaData/lexica/greek-analyses_2.txt
+
+# if you have the builder data all properly in place, then...
 
 cd ~/hipparchia_venv/HipparchiaBuilder && ~/hipparchia_venv/bin/python3 ./makecorpora.py
 
 # build times vary, but 10-40m per corpus should be possible on most machines. 
 # 5-25m is achievable if you are a speed freak who knows how to optimize for your rig
+
 
 # OPTION TWO: BE A RELOADER
 # if you have access to a HipparchiaSQLoader dump, then...
