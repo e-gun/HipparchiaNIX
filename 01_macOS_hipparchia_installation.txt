@@ -99,6 +99,11 @@ rm -rf ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37.ta
 # and this data is not available on github and unlikely ever to be available on github
 # You need access to the TLG_E and PHI00005 and PHI7 disks. Get your hands on them.
 # I do not know if other versions will build. They probably will. 
+#
+# NOTE: HipparchiaServer can and will run just fine with 0 languages and lexica actually installed. 
+# Just don't expect to find anything in an empty database. 
+# You probably want more than nothing. But there is no need to install more than you will use. 
+# If you only install Latin literature, you will only be presented with Latin as a search option.
  
 # OPTION ONE: BE BUILDER
 
