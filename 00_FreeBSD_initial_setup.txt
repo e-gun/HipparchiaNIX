@@ -85,7 +85,7 @@ rm -rf ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37.ta
 # BUILDING - ACQUIRING THE LEXICA OPTION A:
 # use the files inside of Diogenes
 mkdir ~/hipparchia_venv/HipparchiaData/lexica/
-curl https://community.dur.ac.uk/p.j.heslin/Software/Diogenes/Download/diogenes-linux-3.2.0.tar.bz2 > ~/hipparchia_venv/HipparchiaData/lexica/
+curl https://community.dur.ac.uk/p.j.heslin/Software/Diogenes/Download/diogenes-linux-3.2.0.tar.bz2 > ~/hipparchia_venv/HipparchiaData/lexica/diogenes-linux-3.2.0.tar.bz2
 cd ~/hipparchia_venv/HipparchiaData/lexica/
 tar jxf diogenes-linux-3.2.0.tar.bz2
 mv ~/hipparchia_venv/HipparchiaData/lexica/diogenes-3.2.0/diogenes/perl/Perseus_Data/*.* ~/hipparchia_venv/HipparchiaData/lexica/
