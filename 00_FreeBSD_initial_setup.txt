@@ -1,7 +1,7 @@
 # [log in as huser]
 
 su root
-	root# pkg install nano nginx python35 rsync sudo postgresql95-server postgresql95-contrib curl git-lite
+	root# pkg install nano nginx python36 rsync sudo postgresql95-server postgresql95-contrib curl git-lite
 	root# visudo [and add huser]
 	root# printf "\033[31mHipparchia Server\033[0m" > /etc/issue
 	root# printf "\n\n\t\tWelcome to \033[31mHipparchia Server\033[0m\n\n\n" > /etc/motd
@@ -40,9 +40,9 @@ sudo cp ~/hipparchia_venv/HipparchiaBSD/circusd /usr/local/etc/rc.d/circusd
 sudo cp ~/hipparchia_venv/HipparchiaBSD/pf_conf.txt /etc/pf.conf
 
 
-/usr/local/bin/pyvenv-3.5 ~/hipparchia_venv/
-source ~/hipparchia_venv/bin/activate.csh
-pip install bs4 circus flask psycopg2 uWSGI
+/usr/local/bin/python3.6 -m venv ~/hipparchia_venv/
+source ~/hipparchia_venv/bin/activate
+~/hipparchia_venv/bin/pip3 install bs4 circus flask psycopg2 uWSGI
 
 ln -s venv/bin/circusctl ~/circusctl
 ln -s /usr/local/etc/circusd.ini ~/the_circusd.ini
