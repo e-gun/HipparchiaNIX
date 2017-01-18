@@ -94,7 +94,6 @@ if grep hipparchiaDB $HBACONF; then
 else
 	echo "local   $THEDB   hippa_rd,hippa_wr   password" >>  $HBACONF
 	echo "host   $THEDB   hippa_rd,hippa_wr   127.0.0.1/32   password" >>  $HBACONF
-	$BREW services restart postgresql
 fi
 
 # set up some random passwords
@@ -134,6 +133,7 @@ else
 	echo "oops - found old config.py: will not change the password for hippa_rd"
 fi
 
+$BREW services restart postgresql
 
 # support files
 printf "${WHITE}fetching 3rd party support files${NC}\n"
@@ -158,8 +158,8 @@ rm -rf $STATIC/dejavu-fonts-ttf-2.37.tar.bz2 $STATIC/jquery-ui-1.12.1.zip $STATI
 if [ ! -d "$DATAPATH/lexica" ]; then
 	printf "${WHITE}fetching the lexica${NC}\n"
 	mkdir $DATAPATH/lexica/
-	curl https://community.dur.ac.uk/p.j.heslin/Software/Diogenes/Download/diogenes-linux-3.2.0.tar.bz2 > $DATAPATH/diogenes-linux-3.2.0.tar.bz2
 	cd $DATAPATH/lexica/
+	$GET https://community.dur.ac.uk/p.j.heslin/Software/Diogenes/Download/diogenes-linux-3.2.0.tar.bz2
 	tar jxf diogenes-linux-3.2.0.tar.bz2
 	mv $DATAPATH/lexica/diogenes-3.2.0/diogenes/perl/Perseus_Data/*.* $DATAPATH/lexica/
 	rm -rf $DATAPATH/lexica/diogenes-3.2.0/
