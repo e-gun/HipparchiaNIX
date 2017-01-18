@@ -108,12 +108,12 @@ RDPASS=`echo ${RDPASS//[^[:word:]]/}`
 SKRKEY=`echo ${SKRKEY//[^[:word:]]/}`
 
 printf "\n\n${WHITE}setting up your passwords in the configuration files${NC}\n"
-printf "\t${RED}hippa_rw${NC} password will be: ${YELLOW}${WRPASS}${NC}\n"
+printf "\t${RED}hippa_wr${NC} password will be: ${YELLOW}${WRPASS}${NC}\n"
 printf "\t${RED}hippa_rd${NC} password will be: ${YELLOW}${RDPASS}${NC}\n"
 printf "\t${RED}secret key${NC} will be: ${YELLOW}${SKRKEY}${NC}\n\n"
 
 if [ ! -f "$BUILDERPATH/config.ini" ]; then
-	sed -"s/DBPASS = >>yourpasshere<</DBPASS = $WRPASS/" $BUILDERPATH/sample_config.ini > $BUILDERPATH/config.ini
+	sed "s/DBPASS = >>yourpasshere<</DBPASS = $WRPASS/" $BUILDERPATH/sample_config.ini > $BUILDERPATH/config.ini
 	# note: this only works if pg_hba.conf has 'trust' in localhost for `whoami`
 	/usr/local/bin/psql -d $THEDB --command="ALTER ROLE hippa_wr WITH PASSWORD '$WRPASS';"
 else
