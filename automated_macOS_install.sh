@@ -15,7 +15,7 @@ WHITE='\033[1;37m'
 NC='\033[0m'
 
 # ready the installation files and directories
-echo "preparing the installation files and directories"
+printf "${WHITE}preparing the installation files and directories${NC}\n"
 
 for dir in $HIPPHOME $SERVERPATH $BUILDERPATH $LOADERPATH $BSDPATH $DATAPATH
 do
@@ -68,15 +68,22 @@ else
 	echo "wget already installed; will not ask brew to install wget"
 fi
 
+# prepare the python virtual environment
+printf "${WHITE}preparing the python virtual environment${NC}\n"
+/usr/local/bin/python3.6 -m venv $HIPPHOME
+source $HIPPHOME/bin/activate
+$HIPPHOME/bin/pip3 install bs4 flask psycopg2
+
 
 # build the db framework
+# held off on this because we were getting here before '$BREW services start postgresql' was ready for us
 
 /usr/local/bin/createdb -E UTF8 $THEDB
 /usr/local/bin/psql -d $THEDB -a -f $BUILDERPATH/builder/sql/sample_generate_hipparchia_dbs.sql
 
 # harden postgresql
 
-echo "hardening postgresql"
+printf "${WHITE}hardening postgresql${NC}\n"
 HBACONF='/usr/local/var/postgres/pg_hba.conf'
 
 sed -i "" "s/local   all             all                                     trust/local   all   `whoami`   trust/" $HBACONF
@@ -101,7 +108,7 @@ WRPASS=`echo ${WRPASS//[^[:word:]]/}`
 RDPASS=`echo ${RDPASS//[^[:word:]]/}`
 SKRKEY=`echo ${SKRKEY//[^[:word:]]/}`
 
-printf "\n\nsetting up your passwords in the configuration files\n"
+printf "\n\n${WHITE}setting up your passwords in the configuration files${NC}\n"
 printf "\t${RED}hippa_rw${NC} password will be: ${YELLOW}${WRPASS}${NC}\n"
 printf "\t${RED}hippa_rd${NC} password will be: ${YELLOW}${RDPASS}${NC}\n"
 printf "\t${RED}secret key${NC} will be: ${YELLOW}${SKRKEY}${NC}\n\n"
@@ -127,14 +134,9 @@ else
 	echo "oops - found old config.py: will not change the password for hippa_rd"
 fi
 
-# prepare the python virtual environment
-echo "preparing the python virtual environment"
-/usr/local/bin/python3.6 -m venv $HIPPHOME
-source $HIPPHOME/bin/activate
-$HIPPHOME/bin/pip3 install bs4 flask psycopg2
 
 # support files
-echo "fetching 3rd party support files"
+printf "${WHITE}fetching 3rd party support files${NC}\n"
 GET="/usr/local/bin/wget"
 STATIC="$SERVERPATH/server/static"
 
@@ -145,7 +147,7 @@ $GET https://raw.githubusercontent.com/js-cookie/js-cookie/master/src/js.cookie.
 $GET https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.tar.bz2
 $GET http://jqueryui.com/resources/download/jquery-ui-1.12.1.zip
 
-echo "unpacking 3rd party support files"
+echo "${WHITE}unpacking 3rd party support files"
 tar jxf $STATIC/dejavu-fonts-ttf-2.37.tar.bz2
 cp $STATIC/dejavu-fonts-ttf-2.37/ttf/*.ttf $STATIC/ttf/
 unzip $STATIC/jquery-ui-1.12.1.zip
@@ -154,7 +156,7 @@ cp $STATIC/jquery-ui-1.12.1/images/*.png $STATIC/images/
 rm -rf $STATIC/dejavu-fonts-ttf-2.37.tar.bz2 $STATIC/jquery-ui-1.12.1.zip $STATIC/jquery-ui-1.12.1/ $STATIC/dejavu-fonts-ttf-2.37/
 
 if [ ! -d "$DATAPATH/lexica" ]; then
-	echo "fetching the lexica"
+	printf "${WHITE}fetching the lexica${NC}\n"
 	mkdir $DATAPATH/lexica/
 	curl https://community.dur.ac.uk/p.j.heslin/Software/Diogenes/Download/diogenes-linux-3.2.0.tar.bz2 > $DATAPATH/diogenes-linux-3.2.0.tar.bz2
 	cd $DATAPATH/lexica/
