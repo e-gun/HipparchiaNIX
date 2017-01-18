@@ -22,12 +22,13 @@ prior knowledge is presupposed.
 The macOS version is simpler. It comes in two versions: 
 
 [1] a walkthrough that guides you through the commands to send the terminal. 
+
 [2] a somewhat more **dangerous** automated installation that may or may not do it all for you
 
 If #2 does not work, you will have to try to walk through #1 but with the disadvantage
 that a bunch of things will already be half-installed. 
 
-If you feel lucky, open Terminal.app and paste the following into it:
+If you feel unusually lucky and want to open door #2, open Terminal.app and paste the following into it:
 
 ```
 curl https://raw.githubusercontent.com/e-gun/HipparchiaBSD/master/automated_macOS_install.sh | /bin/bash
