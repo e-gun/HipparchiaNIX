@@ -69,6 +69,11 @@ else
 fi
 
 
+# build the db framework
+
+/usr/local/bin/createdb -E UTF8 $THEDB
+/usr/local/bin/psql -d $THEDB -a -f $BUILDERPATH/builder/sql/sample_generate_hipparchia_dbs.sql
+
 # harden postgresql
 
 echo "hardening postgresql"
@@ -84,11 +89,6 @@ else
 	echo "host   $THEDB   hippa_rd,hippa_wr   127.0.0.1/32   password" >>  $HBACONF
 	$BREW services restart postgresql
 fi
-
-# build the db framework
-
-/usr/local/bin/createdb -E UTF8 $THEDB
-/usr/local/bin/psql -d $THEDB -a -f $BUILDERPATH/builder/sql/sample_generate_hipparchia_dbs.sql
 
 # set up some random passwords
 
