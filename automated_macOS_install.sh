@@ -165,8 +165,13 @@ if [ ! -d "$DATAPATH/lexica" ]; then
 	mv $DATAPATH/lexica/1999.04.0059.xml $DATAPATH/lexica/latin-lexicon_1999.04.0059.xml
 fi
 
-printf "\n\n${RED}congratulations, you are ready to build${NC} [provided you did not see any show-stopping error messages above...]\n\n"
-printf "make sure that your ${YELLOW}data files${NC} are all in place and that their locations reflect the values set in ${YELLOW}$BUILDERPATH/config.ini${NC}\n"
+printf "\n\n${RED}congratulations, you are ready to build${NC}\n[provided you did not see any show-stopping error messages above...]\n\n"
+printf "[A1] If you are ${WHITE}building${NC}, make sure that your ${YELLOW}data files${NC} are all in place and that their locations reflect the values set in ${YELLOW}$BUILDERPATH/config.ini${NC}\n\n"
 printf "after that you can execute the following in the Terminal.app:\n"
 printf "\t${WHITE}cd $BUILDERPATH && $HIPPHOME/bin/python3 ./makecorpora.py${NC}\n\n"
+printf "[A2] Alternately you are ${WHITE}reloading${NC}. Make sure that your ${YELLOW}sqldump files${NC} are all in place and that their locations reflect the values set in ${YELLOW}$LOADERPATH/config.ini${NC}\n\n"
+printf "after that you can execute the following in the Terminal.app:\n"
+printf "\t${WHITE}cd $LOADERPATH && $HIPPHOME/bin/python3 ./reloadhipparchiaDBs.py${NC}\n\n"
+printf "[B] Once the databases are loaded all you need to do is double-click ${WHITE}launch_hipparchia.app${NC} which is presently located at $HIPPHOME\n\n"
+
 
