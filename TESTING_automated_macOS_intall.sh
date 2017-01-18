@@ -42,9 +42,19 @@ else
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-$BREW install python3
-$BREW install postgresql
-$BREW services start postgresql
+if [ -f  '/usr/local/bin/python' ]; then
+	$BREW install python3
+else
+	echo "`/usr/local/bin/python -V` installed; will not ask brew to install python"
+fi
+
+if [ -f  '/usr/local/bin/psql' ]; then
+	$BREW install postgresql
+	$BREW services start postgresql
+else
+	echo "`/usr/local/bin/psql -V` installed; will not ask brew to install psql"
+fi
+
 
 # harden postgresql
 
