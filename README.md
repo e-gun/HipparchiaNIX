@@ -28,8 +28,10 @@ The macOS version is simpler. It comes in two versions:
 If #2 does not work, you will have to try to walk through #1 but with the disadvantage
 that a bunch of things will already be half-installed. 
 
-If you feel unusually lucky and want to open door #2, open Terminal.app and paste the following into it:
+Ths script has 'worked for me' status: a clean installation of macOS 10.12.2 successfully loaded this.
+So if you want to pick door #2, launch Terminal.app and paste the following into it:
 
 ```
 curl https://raw.githubusercontent.com/e-gun/HipparchiaBSD/master/automated_macOS_install.sh | /bin/bash
 ```
+
