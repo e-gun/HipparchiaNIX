@@ -14,6 +14,13 @@ YELLOW='\033[1;33m'
 WHITE='\033[1;37m'
 NC='\033[0m'
 
+GIT='/usr/bin/git'
+printf "testing for availability of ${YELLOW}command line tools${NC} tools"
+# git is provided by command line tools...
+$GIT --version > /dev/null
+printf "if you do not already have them installed\n"
+printf "allow the system to do the installation before you input any other information into this script\n"
+
 # ready the installation files and directories
 printf "${WHITE}preparing the installation files and directories${NC}\n"
 
@@ -27,6 +34,7 @@ do
 done
 
 GIT='/usr/bin/git'
+
 cd $SERVERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaServer.git
 cd $BUILDERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaBuilder.git
 cd $LOADERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaSQLoader.git
