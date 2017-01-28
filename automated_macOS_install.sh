@@ -118,6 +118,7 @@ if [ ! -f "$BUILDERPATH/config.ini" ]; then
 	/usr/local/bin/psql -d $THEDB --command="ALTER ROLE hippa_wr WITH PASSWORD '$WRPASS';"
 else
 	echo "oops - found old config.ini: will not change the password for hippa_wr"
+	echo "nb: your OLD password is still there; you will need to change it to your NEW one ($WRPASS)"
 fi
 
 if [ ! -f "$LOADERPATH/config.ini" ]; then
@@ -131,6 +132,7 @@ if [ ! -f "$SERVERPATH/config.py" ]; then
 	/usr/local/bin/psql -d $THEDB --command="ALTER ROLE hippa_rd WITH PASSWORD '$RDPASS';"
 else
 	echo "oops - found old config.py: will not change the password for hippa_rd"
+	echo "nb: your OLD password is still there; you will need to change it to your NEW one ($RDPASS)"
 fi
 
 $BREW services restart postgresql
