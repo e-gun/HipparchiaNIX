@@ -33,8 +33,6 @@ do
 	fi
 done
 
-GIT='/usr/bin/git'
-
 cd $SERVERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaServer.git
 cd $BUILDERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaBuilder.git
 cd $LOADERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaSQLoader.git
@@ -80,7 +78,7 @@ fi
 printf "${WHITE}preparing the python virtual environment${NC}\n"
 /usr/local/bin/python3.6 -m venv $HIPPHOME
 source $HIPPHOME/bin/activate
-$HIPPHOME/bin/pip3 install bs4 flask psycopg2
+$HIPPHOME/bin/pip3 install bs4 flask psycopg2 websockets
 
 
 # build the db framework
