@@ -14,12 +14,50 @@ YELLOW='\033[1;33m'
 WHITE='\033[1;37m'
 NC='\033[0m'
 
-GIT='/usr/bin/git'
-printf "testing for availability of ${YELLOW}command line tools${NC} tools"
-# git is provided by command line tools...
-$GIT --version > /dev/null
-printf "if you do not already have them installed\n"
-printf "allow the system to do the installation before you input any other information into this script\n"
+# install brew
+BREW='/usr/local/bin/brew'
+
+if [ -f "$BREW" ]
+then
+	echo "brew found; no need to install it"
+else
+	echo "brew not found; installing"
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+
+if [ ! -f  '/usr/local/bin/git' ]; then
+	$BREW install git
+else
+	echo "`/usr/local/bin/git --version` installed; will not ask brew to install git"
+fi
+
+if [ ! -f  '/usr/local/bin/python3.6' ]; then
+	$BREW install python3
+else
+	echo "`/usr/local/bin/python -V` installed; will not ask brew to install python"
+fi
+
+if [ ! -f  '/usr/local/bin/psql' ]; then
+	$BREW install postgresql
+	$BREW services start postgresql
+else
+	echo "`/usr/local/bin/psql -V` installed; will not ask brew to install psql"
+fi
+
+if [ ! -f  '/usr/local/bin/wget' ]; then
+	$BREW install wget
+else
+	echo "wget already installed; will not ask brew to install wget"
+fi
+
+GIT='/usr/local/bin/git'
+
+# printf "testing for availability of ${YELLOW}command line tools${NC} tools"
+# # git is provided by command line tools...
+# $GIT --version > /dev/null
+# printf "if you do not already have them installed\n"
+# printf "allow the system to do the installation before you input any other information into this script\n"
 
 # ready the installation files and directories
 printf "${WHITE}preparing the installation files and directories${NC}\n"
@@ -42,37 +80,6 @@ cp $BSDPATH/macOS_selfupdate.sh $HIPPHOME/selfupdate.sh
 chmod 700 $HIPPHOME/selfupdate.sh
 cp -rp $BSDPATH/macos_launch_hipparchia_application.app $HIPPHOME/launch_hipparchia.app
 
-
-# install brew
-BREW='/usr/local/bin/brew'
-
-if [ -f "$BREW" ]
-then
-	echo "brew found; no need to install it"
-else
-	echo "brew not found; installing"
-	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-fi
-
-if [ ! -f  '/usr/local/bin/python3.6' ]; then
-	$BREW install python3
-else
-	echo "`/usr/local/bin/python -V` installed; will not ask brew to install python"
-fi
-
-if [ ! -f  '/usr/local/bin/psql' ]; then
-	$BREW install postgresql
-	$BREW services start postgresql
-else
-	echo "`/usr/local/bin/psql -V` installed; will not ask brew to install psql"
-fi
-
-
-if [ ! -f  '/usr/local/bin/wget' ]; then
-	$BREW install wget
-else
-	echo "wget already installed; will not ask brew to install wget"
-fi
 
 # prepare the python virtual environment
 printf "${WHITE}preparing the python virtual environment${NC}\n"
