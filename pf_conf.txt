@@ -1,9 +1,11 @@
-tcp_services="{ 22, 80}"
+tcp_services="{22, 80, 5000, 5015}"
 
 icmp_types="echoreq"
 
-#vboxhost="10.0.2.2"
-vboxhost="192.168.1.170"
+vboxhost="10.0.2.2"
+#vboxhost="192.168.1.177"
+
+ext_if="em0"
 
 set block-policy return
 
