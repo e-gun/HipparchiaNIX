@@ -1,7 +1,13 @@
+# qemu installation of FreeBSD itself
+# /usr/local/bin/qemu-img create -f raw -o size=14G ./qemu-freebsd.raw
+# /usr/local/bin/qemu-system-x86_64 -display vnc=localhost:1 -cdrom ./FreeBSD-11.0-RELEASE-i386-dvd1.iso -drive file=./qemu-freebsd.raw,format=raw -boot d
+# /usr/local/bin/qemu-system-x86_64 -display vnc=localhost:1 -drive file=./qemu-freebsd.raw,format=raw -boot d -smp 3 \
+# -device e1000,netdev=network0,mac=52:54:00:12:34:56 -netdev user,id=network0,hostfwd=tcp:127.0.0.1:2222-:22,hostfwd=tcp:127.0.0.1:8888-:80 
+
 # [log in as huser]
 
 su root
-	root# pkg install nano nginx python36 rsync sudo postgresql95-server postgresql95-contrib curl git-lite
+	root# pkg install nano nginx python36 rsync sudo postgresql96-server postgresql96-contrib curl git-lite
 	root# visudo [and add huser]
 	root# printf "\033[31mHipparchia Server\033[0m" > /etc/issue
 	root# printf "\n\n\t\tWelcome to \033[31mHipparchia Server\033[0m\n\n\n" > /etc/motd
@@ -15,20 +21,22 @@ cd ~/hipparchia_venv/HipparchiaSQLoader/ && git init && git pull https://github.
 cd ~/hipparchia_venv/HipparchiaBSD/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git
 
 sudo su root
-	root# cat ~huser/venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
+	root# cat ~huser/hipparchia_venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
 	root# /usr/local/etc/rc.d/postgresql initdb
-	root# nano /usr/local/pgsql/data/postgresql.conf [shared_buffers = 256MB]
+	root# nano /var/db/postgres/data96/postgresql.conf [shared_buffers = 256MB]
+	root# /usr/local/etc/rc.d/postgresql start
 	root# exit
 
-sudo su pgsql
-	pgsql$ cd ~ && /usr/local/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
-	pgsql$ createdb hipparchiaDB && psql hipparchiaDB
+sudo su postgres
+	postgres$ createdb hipparchiaDB
+	postgres$ /usr/local/bin/psql -d hipparchiaDB -a -f ~huser/hipparchia_venv/HipparchiaBuilder/builder/sql/sample_generate_hipparchia_dbs.sql
+	psql hipparchiaDB
 		# [insert sql via generate_hipparchia_dbs.sql]
 		# [but for the ownership problems it is: psql -d hipparchiaDB -a -f ~/hipparchia_venv/HipparchiaBuilder/builder/sql/sample_generate_hipparchia_dbs.sql]
 		# [need two roles (hippa_wr & hippa_rd) and authors and works tables]
 			#	\password hippa_wr
 			#	\password hippa_rd
-	pgsql$ exit
+	postgres$ exit
 
 cp ~/hipparchia_venv/HipparchiaBSD/uwsgi.ini ~/uwsgi.ini
 cp ~/hipparchia_venv/HipparchiaBSD/selfupdate.sh ~/selfupdate.sh
@@ -37,19 +45,24 @@ source ~/.cshrc
 sudo cp ~/hipparchia_venv/HipparchiaBSD/ngingx_conf.txt /usr/local/etc/nginx/nginx.conf
 sudo cp ~/hipparchia_venv/HipparchiaBSD/circusd.ini /usr/local/etc/circusd.ini
 sudo cp ~/hipparchia_venv/HipparchiaBSD/circusd /usr/local/etc/rc.d/circusd
+# you had best check the pf.conf rules lest you lock yourself out...
+# if you don't know how to set them properly, then skipping the next it is the least bad option
 sudo cp ~/hipparchia_venv/HipparchiaBSD/pf_conf.txt /etc/pf.conf
 
 
 /usr/local/bin/python3.6 -m venv ~/hipparchia_venv/
-source ~/hipparchia_venv/bin/activate
+source ~/hipparchia_venv/bin/activate.csh
 ~/hipparchia_venv/bin/pip3 install bs4 circus flask psycopg2 uWSGI websockets
 
 ln -s ~/hipparchia_venv/bin/circusctl ~/circusctl
 ln -s /usr/local/etc/circusd.ini ~/the_circusd.ini
 sudo cp ~/hipparchia_venv/bin/circusd /usr/local/bin/circusd
+cp ~/hipparchia_venv/HipparchiaServer/sample_config.py ~/hipparchia_venv/HipparchiaServer/config.py
 nano ~/hipparchia_venv/HipparchiaServer/config.py
+cp ~/hipparchia_venv/HipparchiaBuilder/sample_config.ini ~/hipparchia_venv/HipparchiaBuilder/config.ini
 nano ~/hipparchia_venv/HipparchiaBuilder/config.ini
-cp ~/hipparchia_venv/HipparchiaBuilder/config.ini ~/hipparchia_venv/HipparchiaSQLoader/config.ini
+cp ~/hipparchia_venv/HipparchiaSQLoader/sample_config.ini ~/hipparchia_venv/HipparchiaSQLoader/config.ini
+nano ~/hipparchia_venv/HipparchiaSQLoader/config.ini
 
 # [install jquery, fonts, etc. in ~/hipparchia_venv/HipparchiaServer/server/static/]
 
@@ -120,56 +133,4 @@ cd ~/hipparchia_venv/HipparchiaBuilder && ~/hipparchia_venv/bin/python3 ./makeco
 # you are now ready to run HipparchiaServer 
 
 # [reboot]
-
-===
-
-huser@hipparchia-server:~ % pkg info
-ca_root_nss-3.27               Root certificate bundle from the Mozilla Project
-curl-7.50.3                    Non-interactive tool to get files from FTP, GOPHER, HTTP(S) servers
-expat-2.2.0                    XML 1.0 parser written in C
-gettext-runtime-0.19.8.1       GNU gettext runtime libraries and programs
-git-lite-2.9.2_2               Distributed source code management tool (lite package)
-indexinfo-0.2.5                Utility to regenerate the GNU info page index
-libffi-3.2.1                   Foreign Function Interface
-libgcrypt-1.7.3                General purpose crypto library based on code used in GnuPG
-libgpg-error-1.24              Common error values for all GnuPG components
-libxml2-2.9.4                  XML parser library for GNOME
-libxslt-1.1.29                 The XSLT C library for GNOME
-nano-2.7.0                     Nano's ANOther editor, an enhanced free Pico clone
-nginx-1.10.1_2,2               Robust and small WWW server
-pcre-8.39                      Perl Compatible Regular Expressions library
-perl5-5.20.3_15                Practical Extraction and Report Language
-pkg-1.8.7_3                    Package manager
-postgresql95-client-9.5.4_1    PostgreSQL database (client)
-postgresql95-contrib-9.5.4     The contrib utilities from the PostgreSQL distribution
-postgresql95-server-9.5.4_1    The most advanced open-source database available anywhere
-pypy3-5.2.0.a1                 Fast, compliant implementation of the Python language
-python35-3.5.2                 Interpreted object-oriented programming language
-readline-6.3.8                 Library for editing command lines as they are typed
-rsync-3.1.2_5                  Network file distribution/synchronization utility
-sudo-1.8.18                    Allow others to run commands as root
-
-huser@hipparchia-server:~ % ~/venv/bin/pip list
-beautifulsoup4 (4.5.1)
-bs4 (0.0.1)
-circus (0.14.0)
-click (6.6)
-Flask (0.11.1)
-gevent (1.1.2)
-greenlet (0.4.10)
-iowait (0.2)
-itsdangerous (0.24)
-Jinja2 (2.8)
-MarkupSafe (0.23)
-pip (8.1.2)
-psutil (4.3.1)
-psycopg2 (2.6.2)
-pyzmq (16.0.0)
-setuptools (20.10.1)
-tornado (4.4.2)
-uWSGI (2.0.14)
-Werkzeug (0.11.11)
-
-
-
 
