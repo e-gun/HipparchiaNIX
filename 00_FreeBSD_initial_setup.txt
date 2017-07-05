@@ -36,6 +36,7 @@ sudo su postgres
 		# [need two roles (hippa_wr & hippa_rd) and authors and works tables]
 			#	\password hippa_wr
 			#	\password hippa_rd
+			#	\q
 	postgres$ exit
 
 cp ~/hipparchia_venv/HipparchiaBSD/uwsgi.ini ~/uwsgi.ini
