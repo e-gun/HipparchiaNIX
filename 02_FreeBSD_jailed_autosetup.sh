@@ -1,13 +1,27 @@
+#!/bin/sh
+
 # qemu installation of FreeBSD itself
 # /usr/local/bin/qemu-img create -f raw -o size=14G ./qemu-freebsd.raw
 # /usr/local/bin/qemu-system-x86_64 -display vnc=localhost:1 -cdrom ./FreeBSD-11.0-RELEASE-i386-dvd1.iso -drive file=./qemu-freebsd.raw,format=raw -boot d
 # /usr/local/bin/qemu-system-x86_64 -display vnc=localhost:1 -drive file=./qemu-freebsd.raw,format=raw -boot d -smp 3 \
 # -device e1000,netdev=network0,mac=52:54:00:12:34:56 -netdev user,id=network0,hostfwd=tcp:127.0.0.1:2222-:22,hostfwd=tcp:127.0.0.1:8888-:80 
 
-# [log in as huser]
+HUSER="huser"
+HJAIL="hipparchia"
+PJAIL="sql"
+JAILHOME="/usr/jails/$HJAIL/usr/home/$HUSER"
+HIPPHOME="$JAILHOME/hipparchia_venv"
+SERVERPATH="$HIPPHOME/HipparchiaServer"
+BUILDERPATH="$HIPPHOME/HipparchiaBuilder"
+LOADERPATH="$HIPPHOME/HipparchiaSQLoader"
+BSDPATH="$HIPPHOME/HipparchiaBSD"
+MACPATH="$HIPPHOME/HipparchiaMacOS"
+DATAPATH="$HIPPHOME/HipparchiaData"
+THEDB="hipparchiaDB"
+
 
 su root
-	root# pkg install nano nginx python36 rsync sudo postgresql10-server postgresql10-contrib curl git-lite
+	root# pkg install nano nginx python36 rsync sudo postgresql96-server postgresql96-contrib curl git-lite
 	root# visudo [and add huser]
 	root# printf "\033[31mHipparchia Server\033[0m" > /etc/issue
 	root# printf "\n\n\t\tWelcome to \033[31mHipparchia Server\033[0m\n\n\n" > /etc/motd
