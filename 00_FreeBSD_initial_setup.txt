@@ -53,7 +53,7 @@ sudo cp ~/hipparchia_venv/HipparchiaBSD/pf_conf.txt /etc/pf.conf
 
 /usr/local/bin/python3.6 -m venv ~/hipparchia_venv/
 source ~/hipparchia_venv/bin/activate.csh
-~/hipparchia_venv/bin/pip3 install bs4 circus flask psycopg2 uWSGI websockets
+~/hipparchia_venv/bin/pip3 install bs4 circus flask psycopg2 uWSGI websockets scipy numpy
 
 ln -s ~/hipparchia_venv/bin/circusctl ~/circusctl
 ln -s /usr/local/etc/circusd.ini ~/the_circusd.ini
