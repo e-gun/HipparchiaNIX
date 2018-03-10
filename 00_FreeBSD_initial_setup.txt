@@ -53,7 +53,9 @@ sudo cp ~/hipparchia_venv/HipparchiaBSD/pf_conf.txt /etc/pf.conf
 
 /usr/local/bin/python3.6 -m venv ~/hipparchia_venv/
 source ~/hipparchia_venv/bin/activate.csh
-~/hipparchia_venv/bin/pip3 install bs4 circus flask psycopg2 uWSGI websockets scipy numpy
+
+# scipy & numpy will fail? can install from ports and copy into the venv
+~/hipparchia_venv/bin/pip3 install bs4 circus flask psycopg2 uWSGI websockets scipy numpy gensim cython
 
 ln -s ~/hipparchia_venv/bin/circusctl ~/circusctl
 ln -s /usr/local/etc/circusd.ini ~/the_circusd.ini
@@ -67,7 +69,7 @@ nano ~/hipparchia_venv/HipparchiaSQLoader/config.ini
 
 # [install jquery, fonts, etc. in ~/hipparchia_venv/HipparchiaServer/server/static/]
 
-curl https://code.jquery.com/jquery-3.1.1.min.js > ~/hipparchia_venv/HipparchiaServer/server/static/jquery.min.js
+curl https://code.jquery.com/jquery-3.3.1.min.js > ~/hipparchia_venv/HipparchiaServer/server/static/jquery.min.js
 curl https://raw.githubusercontent.com/js-cookie/js-cookie/master/src/js.cookie.js > ~/hipparchia_venv/HipparchiaServer/server/static/js.cookie.js
 curl -LOk https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.tar.bz2 > ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37.tar.bz2
 curl -LOk https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.tar.bz2 > ~/hipparchia_venv/HipparchiaServer/server/static/dejavu-fonts-ttf-2.37.tar.bz2
