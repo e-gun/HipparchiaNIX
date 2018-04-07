@@ -13,7 +13,7 @@ su root
 	root# printf "\n\n\t\tWelcome to \033[31mHipparchia Server\033[0m\n\n\n" > /etc/motd
 	root# exit
 
-/bin/sh
+/usr/local/bin/bash
 
 HIPPHOME="$HOME/hipparchia_venv"
 SERVERPATH="$HIPPHOME/HipparchiaServer"
@@ -32,10 +32,10 @@ NC='\033[0m'
 
 mkdir $HIPPHOME logs run
 mkdir $DATAPATH $SERVERPATH $LOADERPATH $BUILDERPATH $BSDPATH
-cd $SERVERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git
-cd $BUILDERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaBuilder.git
-cd $LOADERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git
-cd $BSDPATH/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git
+cd $SERVERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git && git remote add origin https://github.com/e-gun/HipparchiaServer.git
+cd $BUILDERPATH/ && git init && git remote add origin https://github.com/e-gun/HipparchiaBuilder.git && git pull origin simpleconnections
+cd $LOADERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git && git remote add origin https://github.com/e-gun/HipparchiaSQLoader.git
+cd $BSDPATH/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git && git remote add origin https://github.com/e-gun/HipparchiaBSD.git
 
 sudo su root
 	root# cat ~huser/hipparchia_venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
@@ -90,7 +90,8 @@ if [ ! -f "$SERVERPATH/config.py" ]; then
 	sed -i "" "s/WRITEUSER = 'consider_re-using_HipparchiaBuilder_user'/WRITEUSER = 'hippa_wr'/" $SERVERPATH/config.py
 	sed -i "" "s/DBWRITEPASS = 'consider_re-using_HipparchiaBuilder_pass'/DBWRITEPASS = '$WRPASS'/" $SERVERPATH/config.py	
 	# note: this only works if pg_hba.conf has 'trust' in localhost for `whoami`
-	/usr/local/bin/psql -d $THEDB --command="ALTER ROLE hippa_rd WITH PASSWORD '$RDPASS';"
+	# /usr/local/bin/psql -d $THEDB --command="ALTER ROLE hippa_rd WITH PASSWORD '$RDPASS';"
+	# instead you will likely need to 'sudo su postgres; psql hipparchiaDB; \password hippa_rd; \q'
 else
 	echo "oops - found old config.py: will not change the password for hippa_rd"
 	echo "nb: your OLD password is still there; you will need to change it to your NEW one ($RDPASS)"
@@ -99,7 +100,8 @@ fi
 if [ ! -f "$BUILDERPATH/config.ini" ]; then
 	sed "s/DBPASS = >>yourpasshere<</DBPASS = $WRPASS/" $BUILDERPATH/sample_config.ini > $BUILDERPATH/config.ini
 	# note: this only works if pg_hba.conf has 'trust' in localhost for `whoami`
-	/usr/local/bin/psql -d $THEDB --command="ALTER ROLE hippa_wr WITH PASSWORD '$WRPASS';"
+	# /usr/local/bin/psql -d $THEDB --command="ALTER ROLE hippa_wr WITH PASSWORD '$WRPASS';"
+	# instead you will likely need to 'sudo su postgres; psql hipparchiaDB; \password hippa_wr; \q'
 else
 	echo "oops - found old config.ini: will not change the password for hippa_wr"
 	echo "nb: your OLD password is still there; you will need to change it to your NEW one ($WRPASS)"
@@ -115,7 +117,7 @@ if [ ! -f "$SERVERPATH/config.py" ]; then
 	sed -i "" "s/WRITEUSER = 'consider_re-using_HipparchiaBuilder_user'/WRITEUSER = 'hippa_wr'/" $SERVERPATH/config.py
 	sed -i "" "s/DBWRITEPASS = 'consider_re-using_HipparchiaBuilder_pass'/DBWRITEPASS = '$WRPASS'/" $SERVERPATH/config.py	
 	# note: this only works if pg_hba.conf has 'trust' in localhost for `whoami`
-	/usr/local/bin/psql -d $THEDB --command="ALTER ROLE hippa_rd WITH PASSWORD '$RDPASS';"
+	# /usr/local/bin/psql -d $THEDB --command="ALTER ROLE hippa_rd WITH PASSWORD '$RDPASS';"
 else
 	echo "oops - found old config.py: will not change the password for hippa_rd"
 	echo "nb: your OLD password is still there; you will need to change it to your NEW one ($RDPASS)"
@@ -139,8 +141,10 @@ source ~/hipparchia_venv/bin/activate.csh
 # scipy & numpy will fail if pip tries to install them; can install from ports and copy into the venv
 # pkg install math/py-numpy
 # pkg install science/py-scipy
+# pkg install math/py-matplotlib
 # cp -rp /usr/local/lib/python3.6/site-packages/numpy* $HIPPHOME/lib/python3.6/site-packages/
 # cp -rp /usr/local/lib/python3.6/site-packages/numpy* $HIPPHOME/lib/python3.6/site-packages/
+# cp -rp /usr/local/lib/python3.6/site-packages/matplotlib* $HIPPHOME/lib/python3.6/site-packages/
 $HIPPHOME/bin/pip3 install bs4 flask psycopg2-binary websockets cython gensim sklearn pyLDAvis matplotlib networkx 
 
 
