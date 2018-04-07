@@ -136,8 +136,12 @@ sudo cp $BSDPATH/pf_conf.txt /etc/pf.conf
 /usr/local/bin/python3.6 -m venv ~/hipparchia_venv/
 source ~/hipparchia_venv/bin/activate.csh
 
-# scipy & numpy will fail? can install from ports and copy into the venv
-$HIPPHOME/bin/pip3 install bs4 flask psycopg2-binary websockets cython scipy numpy gensim sklearn pyLDAvis matplotlib networkx 
+# scipy & numpy will fail if pip tries to install them; can install from ports and copy into the venv
+# pkg install math/py-numpy
+# pkg install science/py-scipy
+# cp -rp /usr/local/lib/python3.6/site-packages/numpy* $HIPPHOME/lib/python3.6/site-packages/
+# cp -rp /usr/local/lib/python3.6/site-packages/numpy* $HIPPHOME/lib/python3.6/site-packages/
+$HIPPHOME/bin/pip3 install bs4 flask psycopg2-binary websockets cython gensim sklearn pyLDAvis matplotlib networkx 
 
 
 ln -s ~/hipparchia_venv/bin/circusctl ~/circusctl
