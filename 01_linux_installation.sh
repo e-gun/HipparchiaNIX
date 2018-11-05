@@ -4,6 +4,8 @@
 # postgresql96 needs to be initialized by hand: see the bottom of this script 
 # you might have to fiddle with some path names for the executables
 
+# debian does not like pooled connections to postgres
+
 HIPPHOME="$HOME/hipparchia_venv"
 SERVERPATH="$HIPPHOME/HipparchiaServer"
 BUILDERPATH="$HIPPHOME/HipparchiaBuilder"

@@ -22,7 +22,12 @@ LOADERPATH="$HIPPHOME/HipparchiaSQLoader"
 BSDPATH="$HIPPHOME/HipparchiaBSD"
 MACPATH="$HIPPHOME/HipparchiaMacOS"
 DATAPATH="$HIPPHOME/HipparchiaData"
+THIRDPARTYPATH="$HIPPHOME/HipparchiaThirdPartySoftware"
+WINDOWSPATH="$HIPPHOME/HipparchiaWindows"
+STATIC="$SERVERPATH/server/static"
+TTF="$STATIC/ttf"
 THEDB="hipparchiaDB"
+
 
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
@@ -30,12 +35,13 @@ WHITE='\033[1;37m'
 NC='\033[0m'
 
 
-mkdir $HIPPHOME logs run
-mkdir $DATAPATH $SERVERPATH $LOADERPATH $BUILDERPATH $BSDPATH
+mkdir $HIPPHOME logs run $HIPPHOME $SERVERPATH $BUILDERPATH $LOADERPATH $BSDPATH $DATAPATH $MACPATH $WINDOWSPATH $THIRDPARTYPATH
 cd $SERVERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git && git remote add origin https://github.com/e-gun/HipparchiaServer.git
 cd $BUILDERPATH/ && git init && git remote add origin https://github.com/e-gun/HipparchiaBuilder.git && git pull origin simpleconnections
 cd $LOADERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git && git remote add origin https://github.com/e-gun/HipparchiaSQLoader.git
 cd $BSDPATH/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git && git remote add origin https://github.com/e-gun/HipparchiaBSD.git
+cd $THIRDPARTYPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaThirdPartySoftware.git
+cd $WINDOWSPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaWindows.git
 
 sudo su root
 	root# cat ~huser/hipparchia_venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
@@ -139,13 +145,13 @@ sudo cp $BSDPATH/pf_conf.txt /etc/pf.conf
 source ~/hipparchia_venv/bin/activate.csh
 
 # scipy & numpy will fail if pip tries to install them; can install from ports and copy into the venv
-# pkg install math/py-numpy
-# pkg install science/py-scipy
-# pkg install math/py-matplotlib
-# cp -rp /usr/local/lib/python3.6/site-packages/numpy* $HIPPHOME/lib/python3.6/site-packages/
-# cp -rp /usr/local/lib/python3.6/site-packages/numpy* $HIPPHOME/lib/python3.6/site-packages/
-# cp -rp /usr/local/lib/python3.6/site-packages/matplotlib* $HIPPHOME/lib/python3.6/site-packages/
-$HIPPHOME/bin/pip3 install bs4 flask psycopg2-binary websockets cython gensim sklearn pyLDAvis matplotlib networkx 
+pkg install math/py-numpy
+pkg install science/py-scipy
+pkg install math/py-matplotlib
+cp -rp /usr/local/lib/python3.6/site-packages/numpy* $HIPPHOME/lib/python3*/site-packages/
+cp -rp /usr/local/lib/python3.6/site-packages/scipy* $HIPPHOME/lib/python3*/site-packages/
+cp -rp /usr/local/lib/python3.6/site-packages/matplotlib* $HIPPHOME/lib/python3*/site-packages/
+$HIPPHOME/bin/pip3 install flask psycopg2-binary websockets cython gensim sklearn pyLDAvis matplotlib networkx 
 
 
 ln -s ~/hipparchia_venv/bin/circusctl ~/circusctl
@@ -160,29 +166,43 @@ nano $LOADERPATH/config.ini
 
 # [install jquery, fonts, etc. in $SERVERPATH/server/static/]
 
-curl https://code.jquery.com/jquery-3.3.1.min.js > $SERVERPATH/server/static/jquery.min.js
-curl https://raw.githubusercontent.com/js-cookie/js-cookie/master/src/js.cookie.js > $SERVERPATH/server/static/js.cookie.js
-curl -LOk https://github.com/dejavu-fonts/dejavu-fonts/releases/download/version_2_37/dejavu-fonts-ttf-2.37.tar.bz2 > $SERVERPATH/server/static/dejavu-fonts-ttf-2.37.tar.bz2
-curl -LOk https://noto-website.storage.googleapis.com/pkgs/NotoSans-unhinted.zip > $SERVERPATH/server/static/NotoSans-unhinted.zip
-curl -LOk https://noto-website-2.storage.googleapis.com/pkgs/NotoSansDisplay-unhinted.zip > $SERVERPATH/server/static/NotoSansDisplay-unhinted.zip
-curl -LOk https://noto-website.storage.googleapis.com/pkgs/NotoMono-hinted.zip > $SERVERPATH/server/static/NotoMono-hinted.zip
-curl -LOk https://github.com/google/roboto/releases/download/v2.138/roboto-unhinted.zip > $SERVERPATH/server/static/roboto-unhinted.zip
-curl -LOk https://github.com/IBM/plex/releases/download/v1.0.1/TrueType.zip > $SERVERPATH/server/static/TrueType.zip
+cd $TTF/
+cp $THIRDPARTYPATH/minimal_installation/Noto*.zip $TTF/
+cp $THIRDPARTYPATH/extra_fonts/*.ttf $TTF/
+cp $THIRDPARTYPATH/extra_fonts/*.zip $TTF/
 
-cd $SERVERPATH/server/static/
-tar jxf $SERVERPATH/server/static/dejavu-fonts-ttf-2.37.tar.bz2
-unzip -o $SERVERPATH/server/static/*.zip
-mv $SERVERPATH/server/static/*.ttf cp $SERVERPATH/server/static/ttf/
-mv $SERVERPATH/server/static/TrueType/*/*.ttf $SERVERPATH/server/static/ttf/
-mv $SERVERPATH/server/static/dejavu-fonts-ttf-2.37/ttf/*.ttf $SERVERPATH/server/static/ttf/
-curl -LOk http://jqueryui.com/resources/download/jquery-ui-1.12.1.zip $SERVERPATH/server/static/jquery-ui-1.12.1.zip
-unzip $SERVERPATH/server/static/jquery-ui-1.12.1.zip
-unzip $SERVERPATH/server/static/NotoSans-unhinted.zip
+ZIPLIST=`ls -1 $TTF/*.zip`
+for Z in $ZIPLIST; do unzip -o $Z; done
 
-mv $SERVERPATH/server/static/*.ttf $SERVERPATH/server/static/ttf/
-cp $SERVERPATH/server/static/jquery-ui-1.12.1/jquery-ui* $SERVERPATH/server/static/
-cp $SERVERPATH/server/static/jquery-ui-1.12.1/images/*.png $SERVERPATH/server/static/images/
-rm -rf $SERVERPATH/server/static/*.zip $SERVERPATH/server/static/dejavu-fonts-ttf-2.37.tar.bz2 $SERVERPATH/server/static/jquery-ui-1.12.1.zip $SERVERPATH/server/static/jquery-ui-1.12.1/ $SERVERPATH/server/static/dejavu-fonts-ttf-2.37/
+DBLSUBDIRS=`ls -d -1 $TTF/*/*/*.ttf`
+for D in $DBLSUBDIRS; do mv $D $TTF/; done
+
+INSUBDIRS=`ls -d -1 $TTF/*/*.ttf`
+for F in $INSUBDIRS; do mv $F $TTF/; done
+
+SUBDIRS=`ls -d -1 $TTF/*/`
+for S in $SUBDIRS; do rm -rf $S; done
+
+rm $TTF/*zip
+
+# JS
+cd $STATIC/
+cp $THIRDPARTYPATH/minimal_installation/jquery-3.3.1.min.js $STATIC/jquery.min.js
+cp $THIRDPARTYPATH/minimal_installation/jquery-ui-1.12.1.zip $STATIC/
+cp $THIRDPARTYPATH/minimal_installation/js.cookie.js $STATIC/
+cp $THIRDPARTYPATH/vector_helpers/*.* $STATIC/
+
+ZIPLIST=`ls -1 $STATIC/*.zip`
+for Z in $ZIPLIST; do unzip -o $Z; done
+rm $STATIC/*zip
+rm $STATIC/*md
+rm $STATIC/LICENSE
+rm $STATIC/d3.js
+mv $STATIC/d3.min.js $STATIC/jsd3.js
+mv $STATIC/ldavis.v1.0.0.js $STATIC/jsforldavis.js
+cp $STATIC/jquery-ui-1.12.1/j* $STATIC/
+cp $STATIC/jquery-ui-1.12.1/images/*.png $STATIC/images/
+rm -rf $STATIC/jquery-ui-1.12.1/
 
 # here comes the SHOWSTOPPER moment if you are going to be a HipparchiaBuilder
 # if you do not have access to the data, then you can't build
