@@ -23,6 +23,7 @@ BSDPATH="$HIPPHOME/HipparchiaBSD"
 MACPATH="$HIPPHOME/HipparchiaMacOS"
 DATAPATH="$HIPPHOME/HipparchiaData"
 THIRDPARTYPATH="$HIPPHOME/HipparchiaThirdPartySoftware"
+EXTRAFONTPATH="$HIPPHOME/HipparchiaExtraFonts"
 WINDOWSPATH="$HIPPHOME/HipparchiaWindows"
 STATIC="$SERVERPATH/server/static"
 TTF="$STATIC/ttf"
@@ -42,6 +43,7 @@ cd $LOADERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoa
 cd $BSDPATH/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git && git remote add origin https://github.com/e-gun/HipparchiaBSD.git
 cd $THIRDPARTYPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaThirdPartySoftware.git
 cd $WINDOWSPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaWindows.git
+cd $EXTRAFONTPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaExtraFonts.git
 
 sudo su root
 	root# cat ~huser/hipparchia_venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
@@ -168,8 +170,8 @@ nano $LOADERPATH/config.ini
 
 cd $TTF/
 cp $THIRDPARTYPATH/minimal_installation/Noto*.zip $TTF/
-cp $THIRDPARTYPATH/extra_fonts/*.ttf $TTF/
-cp $THIRDPARTYPATH/extra_fonts/*.zip $TTF/
+cp $EXTRAFONTPATH/*.ttf $TTF/
+cp $EXTRAFONTPATH/*.zip $TTF/
 
 ZIPLIST=`ls -1 $TTF/*.zip`
 for Z in $ZIPLIST; do unzip -o $Z; done
