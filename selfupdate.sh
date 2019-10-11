@@ -11,5 +11,6 @@ cd ~/hipparchia_venv/HipparchiaBSD/ && git pull https://github.com/e-gun/Hipparc
 cd ~/hipparchia_venv/HipparchiaMacOS/ && git pull https://github.com/e-gun/HipparchiaMacOS.git
 cd ~/hipparchia_venv/HipparchiaThirdPartySoftware/ && git pull https://github.com/e-gun/HipparchiaThirdPartySoftware.git
 cd ~/hipparchia_venv/HipparchiaWindows/ && git pull https://github.com/e-gun/HipparchiaWindows.git
+cd ~/hipparchia_venv/HipparchiaLexicalData/ && git pull https://github.com/e-gun/HipparchiaLexicalData.git
 cd ~
 ~/circusctl restart
