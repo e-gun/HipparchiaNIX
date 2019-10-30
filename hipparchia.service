@@ -1,0 +1,14 @@
+[Unit]
+# for /etc/systemd/system
+# note that you may well need to edit 'User' and with it 'WorkingDirectory' and 'ExecStart'
+Description=Hipparchia Server
+After=network.target
+
+[Service]
+User=hipparchia
+WorkingDirectory=/home/hipparchia/hipparchia_venv/HipparchiaServer
+ExecStart=/home/hipparchia/hipparchia_venv/HipparchiaServer/run.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
