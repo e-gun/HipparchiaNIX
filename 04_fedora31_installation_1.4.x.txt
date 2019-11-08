@@ -1,6 +1,6 @@
 # this should get you a fedora31 installation
 
-sudo dfn install git postgresql postgresql-server postgresql-contrib python3-venv unzip tar bzip2 nano
+sudo dnf install git postgresql postgresql-server postgresql-contrib unzip tar bzip2 nano
 sudo postgresql-setup initdb
 sudo systemctl start postgresql
 sudo systemctl enable postgresql
@@ -78,6 +78,7 @@ sudo rm /tmp/hbconf
 sudo systemctl restart postgresql
 
 cd $TTF
+cp $THIRDPARTYPATH/minimal_installation/Noto*.zip $TTF/
 ZIPLIST=`ls -1 $TTF/*.zip`
 for Z in $ZIPLIST; do unzip -o $Z; done
 DBLSUBDIRS=`ls -d -1 $TTF/*/*/*.ttf`
