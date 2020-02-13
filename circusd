@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # PROVIDE: circusd
-# REQUIRE: LOGIN
+# REQUIRE: LOGIN postgres
 # KEYWORD: shutdown
 
 . /etc/rc.subr
@@ -15,9 +15,9 @@ stop_cmd=":"
 load_rc_config $name
 
 : ${circusd_enable="NO"}
-: ${circusd_config="/usr/local/etc/circusd.ini"}
+: ${circusd_config="/home/hipparchia/hipparchia_venv/HipparchiaBSD/circusd.ini"}
 
-command=/usr/local/bin/circusd
+command="/home/hipparchia/hipparchia_venv/bin/circusd"
 
 circusd_start()
 {

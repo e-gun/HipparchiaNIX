@@ -1,0 +1,112 @@
+#!/bin/bash
+# to be run as root...
+# without bash no access to "WRPASS=`echo ${WRPASS//[^[:word:]]/}`"
+# bash is not yet available?
+#	"pkg install bash"
+
+# net/py-pyzmq: because pip won't build pyzmq inside the venv
+pkg install sudo python3 postgresql12-server-12.1 postgresql12-client-12.1 postgresql12-contrib-12.1 git-lite net/py-pyzmq
+
+
+echo postgresql_enable="YES" >> /etc/rc.conf
+/usr/local/etc/rc.d/postgresql initdb
+/usr/local/etc/rc.d/postgresql start
+
+SSL="/usr/bin/openssl"
+WRPASS=`${SSL} rand -base64 12`
+RDPASS=`${SSL} rand -base64 12`
+SKRKEY=`${SSL} rand -base64 24`
+# you might have regex control chars in there if you are not lucky: 'VvIUkQ9CerGTo/sx5vneHeo+PCKpx7V5'
+WRPASS=`echo ${WRPASS//[^[:word:]]/}`
+RDPASS=`echo ${RDPASS//[^[:word:]]/}`
+SKRKEY=`echo ${SKRKEY//[^[:word:]]/}`
+
+HUSER="hipparchia"
+
+pw useradd -m -d /home/hipparchia -c "Hipparchia" -s /bin/tcsh -n $HUSER
+
+HIPPHOME="/home/$HUSER/hipparchia_venv"
+SERVERPATH="$HIPPHOME/HipparchiaServer"
+BUILDERPATH="$HIPPHOME/HipparchiaBuilder"
+LOADERPATH="$HIPPHOME/HipparchiaSQLoader"
+BSDPATH="$HIPPHOME/HipparchiaBSD"
+MACPATH="$HIPPHOME/HipparchiaMacOS"
+DATAPATH="$HIPPHOME/HipparchiaData"
+THIRDPARTYPATH="$HIPPHOME/HipparchiaThirdPartySoftware"
+EXTRAFONTPATH="$HIPPHOME/HipparchiaExtraFonts"
+WINDOWSPATH="$HIPPHOME/HipparchiaWindows"
+LEXDATAPATH="$HIPPHOME/HipparchiaLexicalData"
+STATIC="$SERVERPATH/server/static"
+TTF="$STATIC/ttf"
+THEDB="hipparchiaDB"
+CONFIGFILE="$SERVERPATH/server/settings/securitysettings.py"
+HBACONF="/var/db/postgres/data12/pg_hba.conf"
+GIT="sudo -u ${HUSER} git"
+
+for dir in $HIPPHOME $SERVERPATH $BUILDERPATH $LOADERPATH $BSDPATH $DATAPATH $MACPATH $WINDOWSPATH $EXTRAFONTPATH $THIRDPARTYPATH $LEXDATAPATH
+do
+	sudo -u $HUSER /bin/mkdir $dir
+done
+
+sudo -u $HUSER python3 -m venv $HIPPHOME
+sudo -u $HUSER $HIPPHOME/bin/pip3 install flask psycopg2 websockets circus
+sudo -u $HUSER $HIPPHOME/bin/pip3 install cython scipy numpy gensim pyLDAvis matplotlib networkx scikit-learn
+
+sed "s/DBPASS = >>yourpasshere<</DBPASS = $WRPASS/" $BUILDERPATH/sample_config.ini > $BUILDERPATH/config.ini
+sed "s/DBPASS = yourpasshere/DBPASS = $WRPASS/" $LOADERPATH/sample_config.ini > $LOADERPATH/config.ini
+
+sudo -u $HUSER cp -rp $SERVERPATH/server/sample_settings $SERVERPATH/server/settings
+sed -i "" "s/DBPASS = 'yourpassheretrytomakeitstrongplease'/DBPASS = '$RDPASS'/" $CONFIGFILE
+sed -i "" "s/SECRET_KEY = 'yourkeyhereitshouldbelongandlooklikecryptographicgobbledygook'/SECRET_KEY = '$SKRKEY'/" $CONFIGFILE
+sed -i "" "s/WRITEUSER = 'consider_re-using_HipparchiaBuilder_user'/WRITEUSER = 'hippa_wr'/" $CONFIGFILE
+sed -i "" "s/DBWRITEPASS = 'consider_re-using_HipparchiaBuilder_pass'/DBWRITEPASS = '$WRPASS'/" $CONFIGFILE
+
+sudo -u postgres createdb -E UTF8 $THEDB
+cp $BUILDERPATH/builder/sql/generate_hipparchia_dbs.sql /tmp
+sudo -u postgres psql -d $THEDB -a -f /tmp/generate_hipparchia_dbs.sql
+rm /tmp/generate_hipparchia_dbs.sql
+sudo -u postgres psql -d $THEDB --command="ALTER ROLE hippa_wr WITH PASSWORD '$WRPASS';"
+sudo -u postgres psql -d $THEDB --command="ALTER ROLE hippa_rd WITH PASSWORD '$RDPASS';"
+echo "host   $THEDB   hippa_rd,hippa_wr   127.0.0.1/32   password" >>  $HBACONF
+echo "local   $THEDB   hippa_rd,hippa_wr   password" >>  $HBACONF
+/usr/local/etc/rc.d/postgresql restart
+
+cd $TTF
+cp $THIRDPARTYPATH/minimal_installation/Noto*.zip $TTF/
+ZIPLIST=`ls -1 $TTF/*.zip`
+for Z in $ZIPLIST; do unzip -o $Z; done
+DBLSUBDIRS=`ls -d -1 $TTF/*/*/*.ttf`
+for D in $DBLSUBDIRS; do mv $D $TTF/; done
+INSUBDIRS=`ls -d -1 $TTF/*/*.ttf`
+for F in $INSUBDIRS; do mv $F $TTF/; done
+SUBDIRS=`ls -d -1 $TTF/*/`
+for S in $SUBDIRS; do rm -rf $S; done
+rm $TTF/*zip
+cd $STATIC/
+cp $THIRDPARTYPATH/minimal_installation/jquery-3.4.1.min.js $STATIC/jquery.min.js
+cp $THIRDPARTYPATH/minimal_installation/jquery-ui-1.12.1.zip $STATIC/
+cp $THIRDPARTYPATH/minimal_installation/js.cookie.js $STATIC/
+cp $THIRDPARTYPATH/vector_helpers/*.* $STATIC/
+ZIPLIST=`ls -1 $STATIC/*.zip`
+for Z in $ZIPLIST; do unzip -o $Z; done
+rm $STATIC/*zip
+rm $STATIC/*md
+rm $STATIC/LICENSE
+rm $STATIC/d3.js
+mv $STATIC/d3.min.js $STATIC/jsd3.js
+mv $STATIC/ldavis.v1.0.0.js $STATIC/jsforldavis.js
+cp $STATIC/jquery-ui-1.12.1/j* $STATIC/
+cp $STATIC/jquery-ui-1.12.1/images/*.png $STATIC/images/
+rm -rf $STATIC/jquery-ui-1.12.1/
+
+mkdir $DATAPATH/lexica/
+cd $DATAPATH/lexica/
+cp $LEXDATAPATH/*.gz $DATAPATH/lexica/
+gunzip $DATAPATH/lexica/*.gz
+
+chown -R $HUSER $HIPPHOME
+
+# echo hipparchia_server_enable="YES" >> /etc/rc.conf
+# cp $BSDPATH/hipparchia_rc.txt /usr/usr/local/etc/rc.d/hipparchia
+# chmod 555 /usr/usr/local/etc/rc.d/hipparchia
+sudo cp $BSDPATH/circusd /usr/local/etc/rc.d/circusd
