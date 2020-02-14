@@ -22,7 +22,7 @@ command="/home/hipparchia/hipparchia_venv/bin/circusd"
 circusd_start()
 {
   echo "Starting circusd"
-  ${command} --daemon ${circusd_config}
+  sudo -u hipparchia ${command} --daemon ${circusd_config}
 }
 
 required_files="${circusd_config}"
