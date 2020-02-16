@@ -115,6 +115,9 @@ cd $DATAPATH/lexica/
 cp $LEXDATAPATH/*.gz $DATAPATH/lexica/
 gunzip $DATAPATH/lexica/*.gz
 
+cp $BSDPATH/selfupdate.sh $HIPPHOME
+cp $BSDPATH/pipupgrade.sh $HIPPHOME
+
 chown -R $HUSER $HIPPHOME
 
 # echo hipparchia_server_enable="YES" >> /etc/rc.conf

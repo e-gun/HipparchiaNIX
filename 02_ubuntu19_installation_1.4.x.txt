@@ -109,3 +109,6 @@ mkdir $DATAPATH/lexica/
 cd $DATAPATH/lexica/
 cp $LEXDATAPATH/*.gz $DATAPATH/lexica/
 gunzip $DATAPATH/lexica/*.gz
+
+cp $BSDPATH/selfupdate.sh $HIPPHOME
+cp $BSDPATH/pipupgrade.sh $HIPPHOME

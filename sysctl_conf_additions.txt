@@ -1,3 +1,0 @@
-net.inet.tcp.fast_finwait2_recycle=1 # recycle FIN/WAIT states quickly, helps against DoS, but may cause false RST (default 0)
-net.inet.tcp.finwait2_timeout=5000 # TCP FIN_WAIT_2 timeout waiting for client FIN packet before state close (default 60000, 60 sec)
-net.inet.tcp.msl=2500              # Maximum Segment Lifetime, time the connection spends in TIME_WAIT state (default 30000, 2*MSL = 60 sec)

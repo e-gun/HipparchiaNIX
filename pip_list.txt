@@ -1,4 +1,0 @@
-% /usr/local/bin/pyvenv-3.5 ~/venv/
-% source venv/bin/activate.csh
-% pip install bs4 circus flask psycopg2 uWSGI
-
