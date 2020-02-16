@@ -13,4 +13,3 @@ cd ~/hipparchia_venv/HipparchiaThirdPartySoftware/ && git pull https://github.co
 cd ~/hipparchia_venv/HipparchiaWindows/ && git pull https://github.com/e-gun/HipparchiaWindows.git
 cd ~/hipparchia_venv/HipparchiaLexicalData/ && git pull https://github.com/e-gun/HipparchiaLexicalData.git
 cd ~
-~/circusctl restart
