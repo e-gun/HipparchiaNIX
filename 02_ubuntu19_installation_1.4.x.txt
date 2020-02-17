@@ -112,3 +112,7 @@ gunzip $DATAPATH/lexica/*.gz
 
 cp $BSDPATH/selfupdate.sh $HIPPHOME
 cp $BSDPATH/pipupgrade.sh $HIPPHOME
+
+sudo cp $BSDPATH/hipparchia.service /etc/systemd/system/
+sudo systemctl enable hipparchia
+sudo systemctl start hipparchia
