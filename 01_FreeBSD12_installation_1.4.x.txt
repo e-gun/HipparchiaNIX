@@ -16,10 +16,12 @@ SSL="/usr/bin/openssl"
 WRPASS=`${SSL} rand -base64 12`
 RDPASS=`${SSL} rand -base64 12`
 SKRKEY=`${SSL} rand -base64 24`
+RUPASS=`${SSL} rand -base64 24`
 # you might have regex control chars in there if you are not lucky: 'VvIUkQ9CerGTo/sx5vneHeo+PCKpx7V5'
 WRPASS=`echo ${WRPASS//[^[:word:]]/}`
 RDPASS=`echo ${RDPASS//[^[:word:]]/}`
 SKRKEY=`echo ${SKRKEY//[^[:word:]]/}`
+RUPASS=`echo ${SKRKEY//[^[:word:]]/}`
 
 HUSER="hipparchia"
 
@@ -60,7 +62,7 @@ cd $LEXDATAPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaLex
 chown -R $HUSER $HIPPHOME
 
 sudo -u $HUSER python3 -m venv $HIPPHOME
-sudo -u $HUSER $HIPPHOME/bin/pip3 install flask psycopg2 websockets circus
+sudo -u $HUSER $HIPPHOME/bin/pip3 install flask psycopg2 websockets circus flask_wtf flask_login
 # matplotlib==3.2.0 briefly broke networkx
 # sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib==3.1.3
 sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib
@@ -74,6 +76,7 @@ sed -i "" "s/DBPASS = 'yourpassheretrytomakeitstrongplease'/DBPASS = '$RDPASS'/"
 sed -i "" "s/SECRET_KEY = 'yourkeyhereitshouldbelongandlooklikecryptographicgobbledygook'/SECRET_KEY = '$SKRKEY'/" $CONFIGFILE
 sed -i "" "s/WRITEUSER = 'consider_re-using_HipparchiaBuilder_user'/WRITEUSER = 'hippa_wr'/" $CONFIGFILE
 sed -i "" "s/DBWRITEPASS = 'consider_re-using_HipparchiaBuilder_pass'/DBWRITEPASS = '$WRPASS'/" $CONFIGFILE
+sed -i "" "s/DEFAULTREMOTEPASS = 'yourremoteuserpassheretrytomakeitstrongplease'/DEFAULTREMOTEPASS = '$RUPASS'/" $CONFIGFILE
 
 sudo -u postgres createdb -E UTF8 $THEDB
 cp $BUILDERPATH/builder/sql/generate_hipparchia_dbs.sql /tmp
