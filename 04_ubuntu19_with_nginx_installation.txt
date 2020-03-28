@@ -125,6 +125,10 @@ cp $BSDPATH/pipupgrade.sh $HIPPHOME
 # sudo systemctl enable hipparchia
 # sudo systemctl start hipparchia
 
+CONFIGFILE="$SERVERPATH/server/settings/securitysettings.py"
+sed -i "s/LIMITACCESSTOLOGGEDINUSERS = False/LIMITACCESSTOLOGGEDINUSERS = True" $CONFIGFILE
+sed -i "s/SETADEFAULTUSER = False/SETADEFAULTUSER = True" $CONFIGFILE
+
 CONFIGFILE="$SERVERPATH/server/settings/networksettings.py"
 sed -i "s/POLLCONNECTIONTYPE = 'notredis'/POLLCONNECTIONTYPE = 'redis'/" $CONFIGFILE
 sed -i "s/EXTERNALWSGI = False/EXTERNALWSGI = True/" $CONFIGFILE
