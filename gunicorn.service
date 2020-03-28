@@ -1,0 +1,15 @@
+[Unit]
+Description=gunicorn daemon for HipparchiaServer
+After=network.target
+
+[Service]
+User=hipparchia
+Group=hipparchia
+RuntimeDirectory=gunicorn
+WorkingDirectory=/home/hipparchia/hipparchia_venv/HipparchiaServer
+ExecStart=/home/hipparchia/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock --workers=1 server:hipparchia
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+[Install]
+WantedBy=multi-user.target
