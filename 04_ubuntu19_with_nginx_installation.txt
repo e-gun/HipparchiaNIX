@@ -135,6 +135,10 @@ sed -i "s/EXTERNALWSGI = False/EXTERNALWSGI = True/" $CONFIGFILE
 
 # the accuracy of the next depends on how many interfaces you are using...
 MYIP=`ip addr | grep "inet " | cut -f6 -d " " | cut -f1 -d / | tail -1`
+
+sed -i "s/LISTENINGADDRESS = '127.0.0.1'/LISTENINGADDRESS = $MYIP/" $CONFIGFILE
+sed -i "s/MYEXTERNALIPADDRESS = '127.0.0.1'/MYEXTERNALIPADDRESS = $MYIP/" $CONFIGFILE
+
 cp $BSDPATH/nginx_conf.txt $BSDPATH/local_nginx_conf.txt
 CONFIGFILE="$BSDPATH/local_nginx_conf.txt"
 EXTERNALPORT="5011"
