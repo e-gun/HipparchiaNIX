@@ -7,9 +7,17 @@ User=hipparchia
 Group=hipparchia
 RuntimeDirectory=gunicorn
 WorkingDirectory=/home/hipparchia/hipparchia_venv/HipparchiaServer
+# --preload will cause problems
+# --workers has been kept low since each seach is already designed to peg a system
 ExecStart=/home/hipparchia/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock --workers=1 server:hipparchia
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 
 [Install]
 WantedBy=multi-user.target
+
+# how to run gunicorn manually when debugging:
+#
+# sudo systemctl stop gunicorn
+# cd ~/hipparchia_venv/HipparchiaServer
+# /home/hipparchia/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock --workers=1 server:hipparchia

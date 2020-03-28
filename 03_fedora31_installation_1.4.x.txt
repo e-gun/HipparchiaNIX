@@ -122,3 +122,5 @@ cp $BSDPATH/pipupgrade.sh $HIPPHOME
 sudo cp $BSDPATH/hipparchia.service /etc/systemd/system/
 sudo systemctl enable hipparchia
 sudo systemctl start hipparchia
+
+cat $BSDPATH/bashrc_supplement.txt >> ~/.bashrc

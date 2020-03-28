@@ -1,0 +1,13 @@
+Color_Off='\e[0m'
+DblAngLtQt='«'  # U+00AB
+DblAngRtQt='»'  # U+00BB
+# lt pink
+PA="\e[38;5;23m"
+PB="\e[38;5;31m"
+PC="\e[38;5;38m"
+GDA="\e[38;5;185m"
+
+PS1="\[${Color_Off}\]\[${GDA}\]\#\[${Color_Off}\] ${DblAngRtQt}\[${PA}\]\u${Color_Off}@${PB}\h\[${Color_Off}\]${DblAngLtQt} \[${PC}\]\W\[${Color_Off}\]/ \$ "
+
+alias tail-log="journalctl -u hipparchia | tail -100"
+# alias tail-log="tail -100 /var/log/nginx/access.log"

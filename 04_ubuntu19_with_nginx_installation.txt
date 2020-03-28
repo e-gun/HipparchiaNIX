@@ -144,3 +144,5 @@ sudo service nginx reload
 sudo cp $BSDPATH/gunicorn.service /etc/systemd/system/gunicorn.service
 sudo systemctl enable gunicorn
 sudo systemctl start gunicorn
+
+cat $BSDPATH/bashrc_supplement.txt >> ~/.bashrc
