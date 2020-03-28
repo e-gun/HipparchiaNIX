@@ -127,6 +127,7 @@ cp $BSDPATH/pipupgrade.sh $HIPPHOME
 
 CONFIGFILE="$SERVERPATH/server/settings/networksettings.py"
 sed -i "s/POLLCONNECTIONTYPE = 'notredis'/POLLCONNECTIONTYPE = 'redis'/" $CONFIGFILE
+sed -i "s/EXTERNALWSGI = False/EXTERNALWSGI = True/" $CONFIGFILE
 
 # the accuracy of the next depends on how many interfaces you are using...
 MYIP=`ip addr | grep "inet " | cut -f6 -d " " | cut -f1 -d / | tail -1`
