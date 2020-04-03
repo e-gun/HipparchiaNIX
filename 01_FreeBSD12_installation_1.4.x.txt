@@ -21,7 +21,7 @@ RUPASS=`${SSL} rand -base64 24`
 WRPASS=`echo ${WRPASS//[^[:word:]]/}`
 RDPASS=`echo ${RDPASS//[^[:word:]]/}`
 SKRKEY=`echo ${SKRKEY//[^[:word:]]/}`
-RUPASS=`echo ${SKRKEY//[^[:word:]]/}`
+RUPASS=`echo ${RUPASS//[^[:word:]]/}`
 
 HUSER="hipparchia"
 

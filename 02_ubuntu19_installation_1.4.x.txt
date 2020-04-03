@@ -56,7 +56,7 @@ RUPASS=`${SSL} rand -base64 24`
 WRPASS=`echo ${WRPASS//[^[:word:]]/}`
 RDPASS=`echo ${RDPASS//[^[:word:]]/}`
 SKRKEY=`echo ${SKRKEY//[^[:word:]]/}`
-RUPASS=`echo ${SKRKEY//[^[:word:]]/}`
+RUPASS=`echo ${RUPASS//[^[:word:]]/}`
 
 sed "s/DBPASS = >>yourpasshere<</DBPASS = $WRPASS/" $BUILDERPATH/sample_config.ini > $BUILDERPATH/config.ini
 sed "s/DBPASS = yourpasshere/DBPASS = $WRPASS/" $LOADERPATH/sample_config.ini > $LOADERPATH/config.ini
