@@ -3,13 +3,13 @@ Description=gunicorn daemon for HipparchiaServer
 After=network.target
 
 [Service]
-User=hipparchia
-Group=hipparchia
+User=USERNAME
+Group=USERNAME
 RuntimeDirectory=gunicorn
-WorkingDirectory=/home/hipparchia/hipparchia_venv/HipparchiaServer
+WorkingDirectory=/home/USERNAME/hipparchia_venv/HipparchiaServer
 # --preload will cause problems
-# --workers has been kept low since each seach is already designed to peg a system
-ExecStart=/home/hipparchia/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock -t 1200 --workers=1 server:hipparchia
+# --workers has been kept low since each seach is already designed to peg a system; this effectively sets the # of possible concurrent searches
+ExecStart=/home/USERNAME/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock -t 1200 --workers=3 server:hipparchia
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 
@@ -20,4 +20,4 @@ WantedBy=multi-user.target
 #
 # sudo systemctl stop gunicorn
 # cd ~/hipparchia_venv/HipparchiaServer
-# /home/hipparchia/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock --workers=1 server:hipparchia
+# /home/USERNAME/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock --workers=1 server:hipparchia

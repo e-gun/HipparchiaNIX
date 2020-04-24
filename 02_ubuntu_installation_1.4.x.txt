@@ -1,4 +1,4 @@
-# this should get you a ubuntu19 installation
+# this should get you a ubuntu19 or ubuntu20 installation
 
 sudo apt install python3-venv unzip postgresql postgresql-contrib
 # if postgresql does not autostart you either follow the prompts or execute the next

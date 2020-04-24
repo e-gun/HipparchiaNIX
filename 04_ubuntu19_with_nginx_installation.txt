@@ -1,10 +1,10 @@
-# this should get you a ubuntu19 installation
+# this should get you a ubuntu19 or ubuntu20 installation
+MYHIPPARCHIAUSER="hipparchia"
 
 sudo apt install python3-venv unzip postgresql postgresql-contrib nginx redis
 # if postgresql does not autostart you either follow the prompts or execute the next
 # sudo systemctl start postgresql
 # sudo systemctl enable postgresql
-
 
 HIPPHOME="$HOME/hipparchia_venv"
 SERVERPATH="$HIPPHOME/HipparchiaServer"
@@ -136,8 +136,8 @@ sed -i "s/EXTERNALWSGI = False/EXTERNALWSGI = True/" $CONFIGFILE
 # the accuracy of the next depends on how many interfaces you are using...
 MYIP=`ip addr | grep "inet " | cut -f6 -d " " | cut -f1 -d / | tail -1`
 
-sed -i "s/LISTENINGADDRESS = '127.0.0.1'/LISTENINGADDRESS = $MYIP/" $CONFIGFILE
-sed -i "s/MYEXTERNALIPADDRESS = '127.0.0.1'/MYEXTERNALIPADDRESS = $MYIP/" $CONFIGFILE
+sed -i "s/LISTENINGADDRESS = '127.0.0.1'/LISTENINGADDRESS = '$MYIP'/" $CONFIGFILE
+sed -i "s/MYEXTERNALIPADDRESS = '127.0.0.1'/MYEXTERNALIPADDRESS = '$MYIP'/" $CONFIGFILE
 
 cp $BSDPATH/nginx_conf.txt $BSDPATH/local_nginx_conf.txt
 CONFIGFILE="$BSDPATH/local_nginx_conf.txt"
@@ -150,8 +150,15 @@ sudo cp $BSDPATH/sites-available_hipparchia.txt /etc/nginx/sites-available/hippa
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/hipparchia /etc/nginx/sites-enabled/hipparchia
 sudo service nginx reload
-sudo cp $BSDPATH/gunicorn.service /etc/systemd/system/gunicorn.service
+
+CONFIGFILE="/etc/systemd/system/gunicorn.service"
+sudo cp $BSDPATH/gunicorn.service $CONFIGFILE
+sed -i "s/USERNAME/$MYHIPPARCHIAUSER/" $CONFIGFILE
 sudo systemctl enable gunicorn
 sudo systemctl start gunicorn
 
 cat $BSDPATH/bashrc_supplement.txt >> ~/.bashrc
+
+# also consider...
+# sudo apt purge snapd
+# sudo apt autoremove --purge
