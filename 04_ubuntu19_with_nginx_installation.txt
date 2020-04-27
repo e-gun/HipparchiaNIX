@@ -1,7 +1,7 @@
 # this should get you a ubuntu19 or ubuntu20 installation
 MYHIPPARCHIAUSER="hipparchia"
 
-sudo apt install python3-venv unzip postgresql postgresql-contrib nginx redis
+sudo apt install python3-venv python3-dev build-essential unzip postgresql postgresql-contrib nginx redis
 # if postgresql does not autostart you either follow the prompts or execute the next
 # sudo systemctl start postgresql
 # sudo systemctl enable postgresql
@@ -153,7 +153,7 @@ sudo service nginx reload
 
 CONFIGFILE="/etc/systemd/system/gunicorn.service"
 sudo cp $BSDPATH/gunicorn.service $CONFIGFILE
-sed -i "s/USERNAME/$MYHIPPARCHIAUSER/" $CONFIGFILE
+sudo sed -i "s/USERNAME/$MYHIPPARCHIAUSER/" $CONFIGFILE
 sudo systemctl enable gunicorn
 sudo systemctl start gunicorn
 
