@@ -66,7 +66,7 @@ sudo -u $HUSER $HIPPHOME/bin/pip3 install flask psycopg2 websockets circus flask
 # matplotlib==3.2.0 briefly broke networkx
 # sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib==3.1.3
 sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib
-sudo -u $HUSER $HIPPHOME/bin/pip3 install cython scipy numpy gensim pyLDAvis networkx scikit-learn
+sudo -u $HUSER $HIPPHOME/bin/pip3 install cython scipy numpy gensim pyLDAvis networkx scikit-learn umap-learn
 
 sed "s/DBPASS = >>yourpasshere<</DBPASS = $WRPASS/" $BUILDERPATH/sample_config.ini > $BUILDERPATH/config.ini
 sed "s/DBPASS = yourpasshere/DBPASS = $WRPASS/" $LOADERPATH/sample_config.ini > $LOADERPATH/config.ini

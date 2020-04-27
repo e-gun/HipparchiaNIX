@@ -1,10 +1,10 @@
 # this should get you a ubuntu19 or ubuntu20 installation
 
-sudo apt install python3-venv unzip postgresql postgresql-contrib
+sudo apt install python3-venv python3-dev build-essential unzip postgresql postgresql-contrib
+
 # if postgresql does not autostart you either follow the prompts or execute the next
 # sudo systemctl start postgresql
 # sudo systemctl enable postgresql
-
 
 HIPPHOME="$HOME/hipparchia_venv"
 SERVERPATH="$HIPPHOME/HipparchiaServer"
@@ -43,7 +43,7 @@ $HIPPHOME/bin/pip3 install flask psycopg2-binary websockets flask_wtf flask_logi
 # matplotlib==3.2.0 briefly broke networkx
 # $HIPPHOME/bin/pip3 install matplotlib==3.1.3
 $HIPPHOME/bin/pip3 install matplotlib
-$HIPPHOME/bin/pip3 install cython scipy numpy gensim pyLDAvis networkx scikit-learn
+$HIPPHOME/bin/pip3 install cython scipy numpy gensim pyLDAvis networkx scikit-learn umap-learn
 
 sudo -u postgres createdb -E UTF8 $THEDB
 cp $BUILDERPATH/builder/sql/generate_hipparchia_dbs.sql /tmp
