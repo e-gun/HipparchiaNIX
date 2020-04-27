@@ -21,7 +21,9 @@ STATIC="$SERVERPATH/server/static"
 TTF="$STATIC/ttf"
 THEDB="hipparchiaDB"
 CONFIGFILE="$SERVERPATH/server/settings/securitysettings.py"
-HBACONF='/etc/postgresql/11/main/pg_hba.conf'
+HBACONF='/etc/postgresql/12/main/pg_hba.conf'
+# ubuntu 20.04 has psql12; 19.10 had psql11
+# HBACONF='/etc/postgresql/11/main/pg_hba.conf'
 GIT='git'
 SSL='openssl'
 
