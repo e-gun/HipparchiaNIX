@@ -9,7 +9,8 @@ RuntimeDirectory=gunicorn
 WorkingDirectory=/home/USERNAME/hipparchia_venv/HipparchiaServer
 # --preload will cause problems
 # --workers has been kept low since each seach is already designed to peg a system; this effectively sets the # of possible concurrent searches
-ExecStart=/home/USERNAME/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock -t 1200 --workers=3 server:hipparchia
+# also, if workers > 1 you will lose access to the progress polls
+ExecStart=/home/USERNAME/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock -t 1200 --workers=1 server:hipparchia
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 
