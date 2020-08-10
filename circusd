@@ -15,7 +15,7 @@ stop_cmd=":"
 load_rc_config $name
 
 : ${circusd_enable="NO"}
-: ${circusd_config="/home/hipparchia/hipparchia_venv/HipparchiaBSD/circusd.ini"}
+: ${circusd_config="/home/hipparchia/hipparchia_venv/HipparchiaNIX/circusd.ini"}
 
 command="/home/hipparchia/hipparchia_venv/bin/circusd"
 

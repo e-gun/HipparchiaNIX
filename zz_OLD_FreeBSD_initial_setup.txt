@@ -19,7 +19,7 @@ HIPPHOME="$HOME/hipparchia_venv"
 SERVERPATH="$HIPPHOME/HipparchiaServer"
 BUILDERPATH="$HIPPHOME/HipparchiaBuilder"
 LOADERPATH="$HIPPHOME/HipparchiaSQLoader"
-BSDPATH="$HIPPHOME/HipparchiaBSD"
+NIXPATH="$HIPPHOME/HipparchiaNIX"
 MACPATH="$HIPPHOME/HipparchiaMacOS"
 DATAPATH="$HIPPHOME/HipparchiaData"
 THIRDPARTYPATH="$HIPPHOME/HipparchiaThirdPartySoftware"
@@ -36,24 +36,24 @@ WHITE='\033[1;37m'
 NC='\033[0m'
 
 
-mkdir $HIPPHOME logs run $HIPPHOME $SERVERPATH $BUILDERPATH $LOADERPATH $BSDPATH $DATAPATH $MACPATH $WINDOWSPATH $THIRDPARTYPATH
+mkdir $HIPPHOME logs run $HIPPHOME $SERVERPATH $BUILDERPATH $LOADERPATH $NIXPATH $DATAPATH $MACPATH $WINDOWSPATH $THIRDPARTYPATH
 cd $SERVERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaServer.git && git remote add origin https://github.com/e-gun/HipparchiaServer.git
 cd $BUILDERPATH/ && git init && git remote add origin https://github.com/e-gun/HipparchiaBuilder.git && git pull origin simpleconnections
 cd $LOADERPATH/ && git init && git pull https://github.com/e-gun/HipparchiaSQLoader.git && git remote add origin https://github.com/e-gun/HipparchiaSQLoader.git
-cd $BSDPATH/ && git init && git pull https://github.com/e-gun/HipparchiaBSD.git && git remote add origin https://github.com/e-gun/HipparchiaBSD.git
+cd $NIXPATH/ && git init && git pull https://github.com/e-gun/HipparchiaNIX.git && git remote add origin https://github.com/e-gun/HipparchiaBSD.git
 cd $THIRDPARTYPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaThirdPartySoftware.git
 cd $WINDOWSPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaWindows.git
 cd $EXTRAFONTPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaExtraFonts.git
 
 sudo su root
-	root# cat ~huser/hipparchia_venv/HipparchiaBSD/rc_conf.txt >> /etc/rc.conf
+	root# cat ~huser/hipparchia_venv/HipparchiaNIX/rc_conf.txt >> /etc/rc.conf
 	root# /usr/local/etc/rc.d/postgresql initdb
 	root# nano /var/db/postgres/data96/postgresql.conf [shared_buffers = 256MB]
 	root# /usr/local/etc/rc.d/postgresql start
 	root# HBACONF='/var/db/postgres/data10/pg_hba.conf'
 	root# echo "host   $THEDB   hippa_rd,hippa_wr   127.0.0.1/32   password" >>  $HBACONF
 	root# echo "local   $THEDB   hippa_rd,hippa_wr   password" >>  $HBACONF
-	root# cat $BSDPATH/sysctl_conf_additions.txt >> /etc/sysctl.conf
+	root# cat $NIXPATH/sysctl_conf_additions.txt >> /etc/sysctl.conf
 
 sudo su postgres
 	postgres$ createdb hipparchiaDB
@@ -131,16 +131,16 @@ else
 	echo "nb: your OLD password is still there; you will need to change it to your NEW one ($RDPASS)"
 fi
 
-cp $BSDPATH/uwsgi.ini ~/uwsgi.ini
-cp $BSDPATH/selfupdate.sh ~/selfupdate.sh
-cp $BSDPATH/cshrc.txt ~/.cshrc
+cp $NIXPATH/uwsgi.ini ~/uwsgi.ini
+cp $NIXPATH/selfupdate.sh ~/selfupdate.sh
+cp $NIXPATH/cshrc.txt ~/.cshrc
 source ~/.cshrc 
-sudo cp $BSDPATH/ngingx_conf.txt /usr/local/etc/nginx/nginx.conf
-sudo cp $BSDPATH/circusd.ini /usr/local/etc/circusd.ini
-sudo cp $BSDPATH/circusd /usr/local/etc/rc.d/circusd
+sudo cp $NIXPATH/ngingx_conf.txt /usr/local/etc/nginx/nginx.conf
+sudo cp $NIXPATH/circusd.ini /usr/local/etc/circusd.ini
+sudo cp $NIXPATH/circusd /usr/local/etc/rc.d/circusd
 # you had best check the pf.conf rules lest you lock yourself out...
 # if you don't know how to set them properly, then skipping the next it is the least bad option
-sudo cp $BSDPATH/pf_conf.txt /etc/pf.conf
+sudo cp $NIXPATH/pf_conf.txt /etc/pf.conf
 
 
 /usr/local/bin/python3.6 -m venv ~/hipparchia_venv/
