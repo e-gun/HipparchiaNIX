@@ -143,7 +143,7 @@ MYIP=`ip addr | grep "inet " | cut -f6 -d " " | cut -f1 -d / | tail -1`
 sed -i "s/LISTENINGADDRESS = '127.0.0.1'/LISTENINGADDRESS = '$MYIP'/" $CONFIGFILE
 sed -i "s/MYEXTERNALIPADDRESS = '127.0.0.1'/MYEXTERNALIPADDRESS = '$MYIP'/" $CONFIGFILE
 
-cp $NIXPATH/nginx_conf.txt $BSDPATH/local_nginx_conf.txt
+cp $NIXPATH/nginx_conf.txt $NIXPATH/local_nginx_conf.txt
 CONFIGFILE="$NIXPATH/local_nginx_conf.txt"
 EXTERNALPORT="5011"
 INTERNALPORT="5010"
