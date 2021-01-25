@@ -1,4 +1,6 @@
 # this should get you a ubuntu19 or ubuntu20 installation
+# script last tested 25 jan 2021 on a clean install of Ubuntu 20.04.1
+
 MYHIPPARCHIAUSER="hipparchia"
 
 sudo apt install python3-venv python3-dev build-essential unzip postgresql postgresql-contrib nginx redis
