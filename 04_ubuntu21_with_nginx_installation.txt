@@ -1,5 +1,11 @@
-# this should get you a ubuntu19 or ubuntu20 installation
-# script last tested 25 jan 2021 on a clean install of Ubuntu 20.04.1
+# this should get you a ubuntu19 or ubuntu20 installation; cut and past of the whole will fail: "sudo apt install"
+#   will break you out of the script; similarly you should make sure postgres gets installed properly; pause accordingly.
+#   but you can do this in a couple of big chunks...
+# script tested 25 jan 2021 on a clean install of Ubuntu 20.04.1
+#   decent chance you will have to start postgres yourself: look for the red text that tells you how to do that
+#   U21 has postgres 13; that changes a path that used to have '12' in it
+# script tested 07 may 2021 on a clean install of Ubuntu 21.04
+
 
 MYHIPPARCHIAUSER="hipparchia"
 
@@ -24,6 +30,8 @@ TTF="$STATIC/ttf"
 THEDB="hipparchiaDB"
 CONFIGFILE="$SERVERPATH/server/settings/securitysettings.py"
 HBACONF='/etc/postgresql/12/main/pg_hba.conf'
+# 13: ubuntu 21.04
+# HBACONF='/etc/postgresql/12/main/pg_hba.conf'
 # ubuntu 20.04 has psql12; 19.10 had psql11
 # HBACONF='/etc/postgresql/11/main/pg_hba.conf'
 GIT='git'
@@ -103,14 +111,14 @@ cd $STATIC/
 cp $THIRDPARTYPATH/minimal_installation/jquery-3.5.1.min.js $STATIC/jquery.min.js
 cp $THIRDPARTYPATH/minimal_installation/jquery-ui-1.12.1.zip $STATIC/
 cp $THIRDPARTYPATH/minimal_installation/js.cookie.js $STATIC/
-cp $THIRDPARTYPATH/vector_helpers/*.* $STATIC/
+cp $THIRDPARTYPATH/vector_helpers/lda* $STATIC/
 ZIPLIST=`ls -1 $STATIC/*.zip`
 for Z in $ZIPLIST; do unzip -o $Z; done
 rm $STATIC/*zip
 rm $STATIC/*md
 rm $STATIC/LICENSE
-rm $STATIC/d3.js
-mv $STATIC/d3.min.js $STATIC/jsd3.js
+# rm $STATIC/d3.js
+# mv $STATIC/d3.min.js $STATIC/jsd3.js
 mv $STATIC/ldavis.v1.0.0.js $STATIC/jsforldavis.js
 cp $STATIC/jquery-ui-1.12.1/j* $STATIC/
 cp $STATIC/jquery-ui-1.12.1/images/*.png $STATIC/images/
@@ -174,6 +182,15 @@ $GIT clone https://github.com/e-gun/HipparchiaGoBinaries.git
 echo "export GOPATH=$HOME/go" >> ~/.bashrc
 export PATH=$PATH:$GOPATH/bin >> ~/.bashrc
 echo "alias hgo='cd ~/go/src/github.com/e-gun'" >> ~/.bashrc
+cd ~/go/src/github.com/e-gun/HipparchiaGoDBHelper
+go mod init
+go mod tidy
+./z_build_archive_install.sh
+cd ~/go/src/github.com/github.com/e-gun/HipparchiaGoWebSocketApp
+go mod init
+go mod tidy
+./z_build_archive_install.sh
+cd ~
 # also consider...
 # sudo apt purge snapd
 # sudo apt autoremove --purge
