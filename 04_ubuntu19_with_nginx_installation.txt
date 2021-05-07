@@ -3,7 +3,7 @@
 
 MYHIPPARCHIAUSER="hipparchia"
 
-sudo apt install python3-venv python3-dev build-essential unzip postgresql postgresql-contrib nginx redis
+sudo apt install python3-venv python3-dev build-essential unzip postgresql postgresql-contrib nginx redis golang-go
 # if postgresql does not autostart you either follow the prompts or execute the next
 # sudo systemctl start postgresql
 # sudo systemctl enable postgresql
@@ -163,6 +163,17 @@ sudo systemctl start gunicorn
 
 cat $NIXPATH/bashrc_supplement.txt >> ~/.bashrc
 
+mkdir ~/go
+mkdir ~/go/src
+mkdir ~/go/src/github.com
+mkdir ~/go/src/github.com/e-gun
+cd ~/go/src/github.com/e-gun
+$GIT clone https://github.com/e-gun/HipparchiaGoDBHelper.git
+$GIT clone https://github.com/e-gun/HipparchiaGoWebSocketApp.git
+$GIT clone https://github.com/e-gun/HipparchiaGoBinaries.git
+echo "export GOPATH=$HOME/go" >> ~/.bashrc
+export PATH=$PATH:$GOPATH/bin >> ~/.bashrc
+echo "alias hgo='cd ~/go/src/github.com/e-gun'" >> ~/.bashrc
 # also consider...
 # sudo apt purge snapd
 # sudo apt autoremove --purge
