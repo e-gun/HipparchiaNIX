@@ -14,6 +14,8 @@ sudo apt install python3-venv python3-dev build-essential unzip postgresql postg
 # sudo systemctl start postgresql
 # sudo systemctl enable postgresql
 
+# nginx will 403 if it can't dive into ${HOME} which is 750 on a default Ubuntu 21.04
+chmod a+x ${HOME}
 HIPPHOME="$HOME/hipparchia_venv"
 SERVERPATH="$HIPPHOME/HipparchiaServer"
 BUILDERPATH="$HIPPHOME/HipparchiaBuilder"
