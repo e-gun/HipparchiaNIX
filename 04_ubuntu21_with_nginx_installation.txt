@@ -1,4 +1,4 @@
-# this should get you a ubuntu19 or ubuntu20 installation; cut and past of the whole will fail: "sudo apt install"
+# this should get you a ubuntu19 or ubuntu20 installation; cut and paste of the whole will fail: "sudo apt install"
 #   will break you out of the script; similarly you should make sure postgres gets installed properly; pause accordingly.
 #   but you can do this in a couple of big chunks...
 # script tested 25 jan 2021 on a clean install of Ubuntu 20.04.1
@@ -179,16 +179,11 @@ mkdir ~/go/src/github.com
 mkdir ~/go/src/github.com/e-gun
 cd ~/go/src/github.com/e-gun
 $GIT clone https://github.com/e-gun/HipparchiaGoDBHelper.git
-$GIT clone https://github.com/e-gun/HipparchiaGoWebSocketApp.git
 $GIT clone https://github.com/e-gun/HipparchiaGoBinaries.git
 echo "export GOPATH=$HOME/go" >> ~/.bashrc
 export PATH=$PATH:$GOPATH/bin >> ~/.bashrc
 echo "alias hgo='cd ~/go/src/github.com/e-gun'" >> ~/.bashrc
 cd ~/go/src/github.com/e-gun/HipparchiaGoDBHelper
-go mod init
-go mod tidy
-./z_build_archive_install.sh
-cd ~/go/src/github.com/github.com/e-gun/HipparchiaGoWebSocketApp
 go mod init
 go mod tidy
 ./z_build_archive_install.sh
