@@ -186,8 +186,9 @@ echo "alias hgo='cd ~/go/src/github.com/e-gun'" >> ~/.bashrc
 cd ~/go/src/github.com/e-gun/HipparchiaGoDBHelper
 go mod init
 go mod tidy
-./z_build_archive_install.sh
+./cli_build_archive_install.sh
 cd ~
+
 # also consider...
 # sudo apt purge snapd
 # sudo apt autoremove --purge
