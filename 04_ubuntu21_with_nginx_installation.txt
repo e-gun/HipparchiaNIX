@@ -42,7 +42,9 @@ SSL='openssl'
 for dir in $HIPPHOME $SERVERPATH $BUILDERPATH $LOADERPATH $NIXPATH $DATAPATH $MACPATH $WINDOWSPATH $EXTRAFONTPATH $THIRDPARTYPATH $LEXDATAPATH; do /bin/mkdir $dir; done
 
 cd $SERVERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaServer.git
+$GIT remote add origin https://github.com/e-gun/HipparchiaServer.git
 cd $BUILDERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaBuilder.git
+$GIT remote add origin https://github.com/e-gun/HipparchiaBuilder.git
 cd $LOADERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaSQLoader.git
 cd $NIXPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaNIX.git
 cd $MACPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaMacOS.git
@@ -53,6 +55,8 @@ cd $LEXDATAPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaLex
 
 python3 -m venv $HIPPHOME
 source $HIPPHOME/bin/activate
+# sometimes psycopg2-binary will not build the papyri, etc and you need to build psycopg2
+# but that can itself be a problem...
 $HIPPHOME/bin/pip3 install flask psycopg2-binary websockets flask_wtf flask_login
 $HIPPHOME/bin/pip3 install gunicorn redis
 # matplotlib==3.2.0 briefly broke networkx

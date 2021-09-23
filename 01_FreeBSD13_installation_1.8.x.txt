@@ -1,14 +1,26 @@
 #!/bin/bash
+# last tested on FreeBSD 13.0 on 23 Sep 2021
 # to be run as root...
 # without bash no access to "WRPASS=`echo ${WRPASS//[^[:word:]]/}`"
 # bash is not yet available?
 #	"pkg install bash"
 
 # net/py-pyzmq: because pip won't build pyzmq inside the venv
-pkg install sudo python3 postgresql12-server-12.1 postgresql12-client-12.1 postgresql12-contrib-12.1 git-lite net/py-pyzmq
+# pkg install sudo python3 postgresql12-server-12.1 postgresql12-client-12.1 postgresql12-contrib-12.1 git-lite net/py-pyzmq
+pkg install sudo python3 postgresql13-server postgresql13-client postgresql13-contrib git-lite net/py-pyzmq
 
+# jailed?
+# echo 'security.jail.sysvipc_allowed=1' >> /etc/sysctl.conf
+# echo 'jail_sysvipc_allow="YES"' >> /etc/rc.conf
+
+# in /usr/local/etc/ezjail/JAILNAME, update:
+# export jail_JAILNAME_parameters=”allow.sysvipc=1″
+
+# restart jail
+# ezjail-admin restart JAILNAME
 
 echo postgresql_enable="YES" >> /etc/rc.conf
+# next fails in a jail unless you do the "jailed?" stuff
 /usr/local/etc/rc.d/postgresql initdb
 /usr/local/etc/rc.d/postgresql start
 
@@ -42,7 +54,7 @@ STATIC="$SERVERPATH/server/static"
 TTF="$STATIC/ttf"
 THEDB="hipparchiaDB"
 CONFIGFILE="$SERVERPATH/server/settings/securitysettings.py"
-HBACONF="/var/db/postgres/data12/pg_hba.conf"
+HBACONF="/var/db/postgres/data13/pg_hba.conf"
 GIT="sudo -u ${HUSER} git"
 
 for dir in $HIPPHOME $SERVERPATH $BUILDERPATH $LOADERPATH $NIXPATH $DATAPATH $MACPATH $WINDOWSPATH $EXTRAFONTPATH $THIRDPARTYPATH $LEXDATAPATH
