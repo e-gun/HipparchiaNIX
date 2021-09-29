@@ -146,3 +146,14 @@ echo circusd_enable="YES" >> /etc/rc.conf
 
 # nginx / gunicorn seems not to like the on-the-fly css substitutions...
 sed "s/hipparchiastyles.css/notostyle.css/" $SERVERPATH/server/sample_settings/htmlandcssstylesettings.py > $SERVERPATH/server/settings/htmlandcssstylesettings.py
+
+
+# cp $HIPPHOME/bin/circusd /usr/local/bin
+# /usr/local/etc/rc.d/circusd start
+
+# manual
+# nohup /home/hipparchia/hipparchia_venv/bin/python3 /home/hipparchia/hipparchia_venv/HipparchiaServer/run.py > h_output.txt &
+
+# pkg install redis
+# echo redis_enable="YES" >> /etc/rc.conf
+# sudo -u $HUSER $HIPPHOME/bin/pip3 install redis

@@ -31,7 +31,7 @@ STATIC="$SERVERPATH/server/static"
 TTF="$STATIC/ttf"
 THEDB="hipparchiaDB"
 CONFIGFILE="$SERVERPATH/server/settings/securitysettings.py"
-HBACONF='/etc/postgresql/12/main/pg_hba.conf'
+HBACONF='/etc/postgresql/13/main/pg_hba.conf'
 # 13: ubuntu 21.04
 # HBACONF='/etc/postgresql/12/main/pg_hba.conf'
 # ubuntu 20.04 has psql12; 19.10 had psql11
