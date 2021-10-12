@@ -7,14 +7,14 @@
 
 # net/py-pyzmq: because pip won't build pyzmq inside the venv
 # pkg install sudo python3 postgresql12-server-12.1 postgresql12-client-12.1 postgresql12-contrib-12.1 git-lite net/py-pyzmq
-pkg install sudo python3 postgresql13-server postgresql13-client postgresql13-contrib git-lite net/py-pyzmq
+pkg install sudo python3 postgresql13-server postgresql13-client postgresql13-contrib git-lite net/py-pyzmq go
 
 # jailed?
 # echo 'security.jail.sysvipc_allowed=1' >> /etc/sysctl.conf
 # echo 'jail_sysvipc_allow="YES"' >> /etc/rc.conf
 
 # in /usr/local/etc/ezjail/JAILNAME, update:
-# export jail_JAILNAME_parameters=”allow.sysvipc=1″
+# export jail_JAILNAME_parameters="allow.sysvipc=1"
 
 # restart jail
 # ezjail-admin restart JAILNAME
@@ -74,7 +74,11 @@ cd $LEXDATAPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaLex
 chown -R $HUSER $HIPPHOME
 
 sudo -u $HUSER python3 -m venv $HIPPHOME
-sudo -u $HUSER $HIPPHOME/bin/pip3 install flask psycopg2 websockets circus flask_wtf flask_login
+sudo -u $HUSER $HIPPHOME/bin/pip3 install flask websockets circus flask_wtf flask_login
+# psycopg2 no longer does streamcopy properly (2.9.1)?
+pip install psycopg2==2.8.5
+
+# ? pip install pg-stream-copy ?
 # matplotlib==3.2.0 briefly broke networkx
 # sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib==3.1.3
 sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib
@@ -96,6 +100,8 @@ sudo -u postgres psql -d $THEDB -a -f /tmp/generate_hipparchia_dbs.sql
 rm /tmp/generate_hipparchia_dbs.sql
 sudo -u postgres psql -d $THEDB --command="ALTER ROLE hippa_wr WITH PASSWORD '$WRPASS';"
 sudo -u postgres psql -d $THEDB --command="ALTER ROLE hippa_rd WITH PASSWORD '$RDPASS';"
+
+# note that if you are in a jail you might want 127.0.1.1/32 (vel sim.) here)
 echo "host   $THEDB   hippa_rd,hippa_wr   127.0.0.1/32   password" >>  $HBACONF
 echo "local   $THEDB   hippa_rd,hippa_wr   password" >>  $HBACONF
 /usr/local/etc/rc.d/postgresql restart
@@ -141,8 +147,8 @@ chown -R $HUSER $HIPPHOME
 # echo hipparchia_server_enable="YES" >> /etc/rc.conf
 # cp $NIXPATH/hipparchia_rc.txt /usr/usr/local/etc/rc.d/hipparchia
 # chmod 555 /usr/usr/local/etc/rc.d/hipparchia
-sudo cp $NIXPATH/circusd /usr/local/etc/rc.d/circusd
-echo circusd_enable="YES" >> /etc/rc.conf
+# sudo cp $NIXPATH/circusd /usr/local/etc/rc.d/circusd
+# echo circusd_enable="YES" >> /etc/rc.conf
 
 # nginx / gunicorn seems not to like the on-the-fly css substitutions...
 sed "s/hipparchiastyles.css/notostyle.css/" $SERVERPATH/server/sample_settings/htmlandcssstylesettings.py > $SERVERPATH/server/settings/htmlandcssstylesettings.py
@@ -154,6 +160,24 @@ sed "s/hipparchiastyles.css/notostyle.css/" $SERVERPATH/server/sample_settings/h
 # manual
 # nohup /home/hipparchia/hipparchia_venv/bin/python3 /home/hipparchia/hipparchia_venv/HipparchiaServer/run.py > h_output.txt &
 
-# pkg install redis
-# echo redis_enable="YES" >> /etc/rc.conf
-# sudo -u $HUSER $HIPPHOME/bin/pip3 install redis
+pkg install redis
+echo redis_enable="YES" >> /etc/rc.conf
+sudo -u $HUSER $HIPPHOME/bin/pip3 install redis
+
+sudo -u $HUSER ln -s $HIPPHOME/HipparchiaServer/server/settings $HUSER/
+sudo -u $HUSER mkdir -p $HUSER/go/src/github.com/e-gun
+cd $HUSER/go/src/github.com/e-gun
+sudo -u $HUSER git clone https://github.com/e-gun/HipparchiaGoDBHelper.git
+cd HipparchiaGoDBHelper
+sudo -u $HUSER go mod init
+sudo -u $HUSER go mod tidy
+sudo -u $HUSER ./cli_build_archive_install.sh
+
+pkg install nginx
+echo nginx_enable="YES" >> /etc/rc.conf
+sudo -u $HUSER $HIPPHOME/bin/pip3 install gunicorn
+
+# sudo -u  hipparchia /home/hipparchia/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock -t 1200 --workers=1 server:hipparchia
+# daemon -c -u hipparchia -R 10 /home/hipparchia/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock -t 1200 --workers=1 --chdir /home/hipparchia/hipparchia_venv/HipparchiaServer server:hipparchia
+cp $NIXPATH/hipparchia_rc.sh /usr/local/etc/rc.d/hipparchia
+echo hipparchia_enable="YES" >> /etc/rc.conf
