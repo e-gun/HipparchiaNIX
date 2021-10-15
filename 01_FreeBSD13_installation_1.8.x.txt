@@ -74,15 +74,22 @@ cd $LEXDATAPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaLex
 chown -R $HUSER $HIPPHOME
 
 sudo -u $HUSER python3 -m venv $HIPPHOME
-sudo -u $HUSER $HIPPHOME/bin/pip3 install flask websockets circus flask_wtf flask_login
+sudo -u $HUSER $HIPPHOME/bin/pip3 install flask websockets flask_wtf flask_login
 # psycopg2 no longer does streamcopy properly (2.9.1)?
 pip install psycopg2==2.8.5
 
 # ? pip install pg-stream-copy ?
+
 # matplotlib==3.2.0 briefly broke networkx
 # sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib==3.1.3
-sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib
-sudo -u $HUSER $HIPPHOME/bin/pip3 install cython scipy numpy gensim pyLDAvis networkx scikit-learn umap-learn
+
+# scipy, etc cannot be installed via pip
+pkg install py38-scipy py38-gensim py38-scikit-learn
+
+# vectors effectively unusable on FreeBSD ATM since these modules will not build without building scipy and they do not have packages...
+
+# sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib
+# sudo -u $HUSER $HIPPHOME/bin/pip3 install cython numpy pyLDAvis networkx umap-learn
 
 sed "s/DBPASS = >>yourpasshere<</DBPASS = $WRPASS/" $BUILDERPATH/sample_config.ini > $BUILDERPATH/config.ini
 sed "s/DBPASS = yourpasshere/DBPASS = $WRPASS/" $LOADERPATH/sample_config.ini > $LOADERPATH/config.ini
