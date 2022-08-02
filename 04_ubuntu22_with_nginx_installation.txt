@@ -42,17 +42,14 @@ SSL='openssl'
 
 for dir in $HIPPHOME $SERVERPATH $BUILDERPATH $LOADERPATH $NIXPATH $DATAPATH $MACPATH $WINDOWSPATH $EXTRAFONTPATH $THIRDPARTYPATH $LEXDATAPATH; do /bin/mkdir $dir; done
 
-cd $SERVERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaServer.git
-$GIT remote add origin https://github.com/e-gun/HipparchiaServer.git
-cd $BUILDERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaBuilder.git
-$GIT remote add origin https://github.com/e-gun/HipparchiaBuilder.git
-cd $LOADERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaSQLoader.git
-cd $NIXPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaNIX.git
-cd $MACPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaMacOS.git
-cd $THIRDPARTYPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaThirdPartySoftware.git
-cd $EXTRAFONTPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaExtraFonts.git
-cd $WINDOWSPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaWindows.git
-cd $LEXDATAPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaLexicalData.git
+$GIT clone https://github.com/e-gun/HipparchiaBuilder
+$GIT clone https://github.com/e-gun/HipparchiaSQLoader
+$GIT clone https://github.com/e-gun/HipparchiaNIX
+# $GIT clone https://github.com/e-gun/HipparchiaMacOS
+$GIT clone https://github.com/e-gun/HipparchiaThirdPartySoftware
+# $GIT clone https://github.com/e-gun/HipparchiaExtraFonts
+# $GIT clone https://github.com/e-gun/HipparchiaWindows
+# $GIT clone https://github.com/e-gun/HipparchiaLexicalData
 
 python3 -m venv $HIPPHOME
 source $HIPPHOME/bin/activate
@@ -107,38 +104,55 @@ sudo chmod 600 $HBACONF
 sudo rm /tmp/hbconf
 sudo systemctl restart postgresql
 
-cd $TTF
+# FONTS
+cd $TTF/
 cp $THIRDPARTYPATH/minimal_installation/Noto*.zip $TTF/
-ZIPLIST=`ls -1 $TTF/*.zip`
+#if [[ ${OPTION} != 'minimal' ]]; then
+#  cp $EXTRAFONTPATH/*.ttf $TTF/
+#  cp $EXTRAFONTPATH/*.zip $TTF/
+#  CONFIGFILE="$SERVERPATH/server/settings/htmlandcssstylesettings.py"
+#  sed -i "" "s/ENBALEFONTPICKER = 'no'/ENBALEFONTPICKER = 'yes'/" $CONFIGFILE
+#fi
+
+ZIPLIST=$(ls -1 $TTF/*.zip)
 for Z in $ZIPLIST; do unzip -o $Z; done
-DBLSUBDIRS=`ls -d -1 $TTF/*/*/*.ttf`
+
+DBLSUBDIRS=$(ls -d -1 $TTF/*/*/*.ttf)
 for D in $DBLSUBDIRS; do mv $D $TTF/; done
-INSUBDIRS=`ls -d -1 $TTF/*/*.ttf`
+
+INSUBDIRS=$(ls -d -1 $TTF/*/*.ttf)
 for F in $INSUBDIRS; do mv $F $TTF/; done
-SUBDIRS=`ls -d -1 $TTF/*/`
+
+SUBDIRS=$(ls -d -1 $TTF/*/)
 for S in $SUBDIRS; do rm -rf $S; done
+
 rm $TTF/*zip
+
+# JS
 cd $STATIC/
-cp $THIRDPARTYPATH/minimal_installation/jquery-3.5.1.min.js $STATIC/jquery.min.js
-cp $THIRDPARTYPATH/minimal_installation/jquery-ui-1.12.1.zip $STATIC/
+cp $THIRDPARTYPATH/minimal_installation/jquery-3.6.0.min.js $STATIC/jquery.min.js
+cp $THIRDPARTYPATH/minimal_installation/jquery-ui-*.zip $STATIC/
 cp $THIRDPARTYPATH/minimal_installation/js.cookie.js $STATIC/
-cp $THIRDPARTYPATH/vector_helpers/lda* $STATIC/
-ZIPLIST=`ls -1 $STATIC/*.zip`
+cp $THIRDPARTYPATH/vector_helpers/*.* $STATIC/
+
+ZIPLIST=$(ls -1 $STATIC/*.zip)
 for Z in $ZIPLIST; do unzip -o $Z; done
 rm $STATIC/*zip
 rm $STATIC/*md
 rm $STATIC/LICENSE
-# rm $STATIC/d3.js
-# mv $STATIC/d3.min.js $STATIC/jsd3.js
+rm $STATIC/d3.js
+mv $STATIC/d3.min.js $STATIC/jsd3.js
 mv $STATIC/ldavis.v1.0.0.js $STATIC/jsforldavis.js
-cp $STATIC/jquery-ui-1.12.1/j* $STATIC/
-cp $STATIC/jquery-ui-1.12.1/images/*.png $STATIC/images/
-rm -rf $STATIC/jquery-ui-1.12.1/
+cp $STATIC/jquery-ui-*/j* $STATIC/
+cp $STATIC/jquery-ui-*/images/*.png $STATIC/images/
+rm -rf $STATIC/jquery-ui-*/
 
-mkdir $DATAPATH/lexica/
-cd $DATAPATH/lexica/
-cp $LEXDATAPATH/*.gz $DATAPATH/lexica/
-gunzip $DATAPATH/lexica/*.gz
+if [ ! -d "$DATAPATH/lexica" ]; then
+  mkdir $DATAPATH/lexica/
+  cd $DATAPATH/lexica/
+  wget "https://github.com/e-gun/HipparchiaLexicalData/raw/stable/logeion.lsj.xml.gz"
+  gunzip $DATAPATH/lexica/*.gz
+fi
 
 cp $NIXPATH/selfupdate.sh $HIPPHOME
 cp $NIXPATH/pipupgrade.sh $HIPPHOME
@@ -173,6 +187,9 @@ sudo cp $NIXPATH/sites-available_hipparchia.txt /etc/nginx/sites-available/hippa
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/hipparchia /etc/nginx/sites-enabled/hipparchia
 sudo service nginx reload
+
+# NGINX won't do the substitutions in the standard CSS file right; use the hard-coded version
+sed "s/hipparchiastyles.css/notostyle.css/" $SERVERPATH/server/sample_settings/htmlandcssstylesettings.py > $SERVERPATH/server/settings/htmlandcssstylesettings.py
 
 CONFIGFILE="/etc/systemd/system/gunicorn.service"
 sudo cp $NIXPATH/gunicorn.service $CONFIGFILE
