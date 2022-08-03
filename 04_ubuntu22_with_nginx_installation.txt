@@ -49,7 +49,7 @@ $GIT clone https://github.com/e-gun/HipparchiaNIX
 $GIT clone https://github.com/e-gun/HipparchiaThirdPartySoftware
 # $GIT clone https://github.com/e-gun/HipparchiaExtraFonts
 # $GIT clone https://github.com/e-gun/HipparchiaWindows
-# $GIT clone https://github.com/e-gun/HipparchiaLexicalData
+$GIT clone --depth 1 https://github.com/e-gun/HipparchiaLexicalData
 
 python3 -m venv $HIPPHOME
 source $HIPPHOME/bin/activate

@@ -1,13 +1,20 @@
 #!/bin/bash
-# last tested on FreeBSD 13.0 on 23 Sep 2021
+# last tested on FreeBSD 13.1 on 01 Aug 2022
 # to be run as root...
 # without bash no access to "WRPASS=`echo ${WRPASS//[^[:word:]]/}`"
 # bash is not yet available?
 #	"pkg install bash"
 
+PSQ="14"
+PY="39"
+
 # net/py-pyzmq: because pip won't build pyzmq inside the venv
 # pkg install sudo python3 postgresql12-server-12.1 postgresql12-client-12.1 postgresql12-contrib-12.1 git-lite net/py-pyzmq
-pkg install sudo python3 postgresql13-server postgresql13-client postgresql13-contrib git-lite net/py-pyzmq go
+# pkg install sudo python3 postgresql13-server postgresql13-client postgresql13-contrib git-lite net/py-pyzmq go
+pkg install sudo wget python3 postgresql${PSQ}-server postgresql${PSQ}-client postgresql${PSQ}-contrib git-lite net/py-pyzmq go
+
+# scipy, etc cannot be installed via pip
+pkg install py${PY}-scipy py${PY}-gensim py${PY}-scikit-learn
 
 # jailed?
 # echo 'security.jail.sysvipc_allowed=1' >> /etc/sysctl.conf
@@ -54,37 +61,30 @@ STATIC="$SERVERPATH/server/static"
 TTF="$STATIC/ttf"
 THEDB="hipparchiaDB"
 CONFIGFILE="$SERVERPATH/server/settings/securitysettings.py"
-HBACONF="/var/db/postgres/data13/pg_hba.conf"
+HBACONF="/var/db/postgres/data${PSQ}/pg_hba.conf"
 GIT="sudo -u ${HUSER} git"
 
-for dir in $HIPPHOME $SERVERPATH $BUILDERPATH $LOADERPATH $NIXPATH $DATAPATH $MACPATH $WINDOWSPATH $EXTRAFONTPATH $THIRDPARTYPATH $LEXDATAPATH
-do
-	sudo -u $HUSER /bin/mkdir $dir
-done
-
-cd $SERVERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaServer.git
-cd $BUILDERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaBuilder.git
-cd $LOADERPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaSQLoader.git
-cd $NIXPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaNIX.git
-cd $MACPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaMacOS.git
-cd $THIRDPARTYPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaThirdPartySoftware.git
-cd $EXTRAFONTPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaExtraFonts.git
-cd $WINDOWSPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaWindows.git
-cd $LEXDATAPATH && $GIT init && $GIT pull https://github.com/e-gun/HipparchiaLexicalData.git
-chown -R $HUSER $HIPPHOME
-
 sudo -u $HUSER python3 -m venv $HIPPHOME
+sudo -u $HUSER $HIPPHOME/bin/python3 -m pip install --upgrade pip
 sudo -u $HUSER $HIPPHOME/bin/pip3 install flask websockets flask_wtf flask_login
 # psycopg2 no longer does streamcopy properly (2.9.1)?
-pip install psycopg2==2.8.5
+sudo -u $HUSER $HIPPHOME/bin/pip3 install psycopg2==2.8.5
+
+cd $HIPPHOME
+$GIT clone https://github.com/e-gun/HipparchiaServer.git
+$GIT clone https://github.com/e-gun/HipparchiaBuilder
+$GIT clone https://github.com/e-gun/HipparchiaSQLoader
+$GIT clone https://github.com/e-gun/HipparchiaNIX
+# $GIT clone https://github.com/e-gun/HipparchiaMacOS
+$GIT clone https://github.com/e-gun/HipparchiaThirdPartySoftware
+# $GIT clone https://github.com/e-gun/HipparchiaExtraFonts
+# $GIT clone https://github.com/e-gun/HipparchiaWindows
+$GIT clone --depth 1 https://github.com/e-gun/HipparchiaLexicalData
 
 # ? pip install pg-stream-copy ?
 
 # matplotlib==3.2.0 briefly broke networkx
 # sudo -u $HUSER $HIPPHOME/bin/pip3 install matplotlib==3.1.3
-
-# scipy, etc cannot be installed via pip
-pkg install py38-scipy py38-gensim py38-scikit-learn
 
 # vectors effectively unusable on FreeBSD ATM since these modules will not build without building scipy and they do not have packages...
 
@@ -113,23 +113,17 @@ echo "host   $THEDB   hippa_rd,hippa_wr   127.0.0.1/32   password" >>  $HBACONF
 echo "local   $THEDB   hippa_rd,hippa_wr   password" >>  $HBACONF
 /usr/local/etc/rc.d/postgresql restart
 
-cd $TTF
-cp $THIRDPARTYPATH/minimal_installation/Noto*.zip $TTF/
-ZIPLIST=`ls -1 $TTF/*.zip`
-for Z in $ZIPLIST; do unzip -o $Z; done
-DBLSUBDIRS=`ls -d -1 $TTF/*/*/*.ttf`
-for D in $DBLSUBDIRS; do mv $D $TTF/; done
-INSUBDIRS=`ls -d -1 $TTF/*/*.ttf`
-for F in $INSUBDIRS; do mv $F $TTF/; done
-SUBDIRS=`ls -d -1 $TTF/*/`
-for S in $SUBDIRS; do rm -rf $S; done
-rm $TTF/*zip
+unzip -o $THIRDPARTYPATH/minimal_installation/NotoBaseFonts.zip -d $TTF/
+mv $TTF/NotoBaseFonts/*ttf $TTF/
+rm -rf $TTF/NotoBaseFonts/
+rm -rf $TTF/__MACOSX/
+
 cd $STATIC/
 cp $THIRDPARTYPATH/minimal_installation/jquery-3.5.1.min.js $STATIC/jquery.min.js
-cp $THIRDPARTYPATH/minimal_installation/jquery-ui-1.12.1.zip $STATIC/
+cp $THIRDPARTYPATH/minimal_installation/jquery-ui-*.zip $STATIC/
 cp $THIRDPARTYPATH/minimal_installation/js.cookie.js $STATIC/
 cp $THIRDPARTYPATH/vector_helpers/*.* $STATIC/
-ZIPLIST=`ls -1 $STATIC/*.zip`
+ZIPLIST=$(ls -1 $STATIC/*.zip)
 for Z in $ZIPLIST; do unzip -o $Z; done
 rm $STATIC/*zip
 rm $STATIC/*md
@@ -137,13 +131,15 @@ rm $STATIC/LICENSE
 rm $STATIC/d3.js
 mv $STATIC/d3.min.js $STATIC/jsd3.js
 mv $STATIC/ldavis.v1.0.0.js $STATIC/jsforldavis.js
-cp $STATIC/jquery-ui-1.12.1/j* $STATIC/
-cp $STATIC/jquery-ui-1.12.1/images/*.png $STATIC/images/
-rm -rf $STATIC/jquery-ui-1.12.1/
+cp $STATIC/jquery-ui-*/j* $STATIC/
+cp $STATIC/jquery-ui-*/images/*.png $STATIC/images/
+rm -rf $STATIC/jquery-ui-*/
 
-mkdir $DATAPATH/lexica/
+mkdir -p $DATAPATH/lexica/
 cd $DATAPATH/lexica/
-cp $LEXDATAPATH/*.gz $DATAPATH/lexica/
+HLD="https://github.com/e-gun/HipparchiaLexicalData/raw/stable"
+wget "${HLD}/logeion.lsj.xml.gz"
+wget "${HLD}/latin-lexicon_1999.04.0059.xml.gz"
 gunzip $DATAPATH/lexica/*.gz
 
 cp $NIXPATH/selfupdate.sh $HIPPHOME
@@ -172,8 +168,9 @@ echo redis_enable="YES" >> /etc/rc.conf
 sudo -u $HUSER $HIPPHOME/bin/pip3 install redis
 
 sudo -u $HUSER ln -s $HIPPHOME/HipparchiaServer/server/settings $HUSER/
-sudo -u $HUSER mkdir -p $HUSER/go/src/github.com/e-gun
-cd $HUSER/go/src/github.com/e-gun
+cd /home/$HUSER
+sudo -u $HUSER mkdir -p go/src/github.com/e-gun
+cd /home/$HUSER/go/src/github.com/e-gun
 sudo -u $HUSER git clone https://github.com/e-gun/HipparchiaGoDBHelper.git
 cd HipparchiaGoDBHelper
 sudo -u $HUSER go mod init
