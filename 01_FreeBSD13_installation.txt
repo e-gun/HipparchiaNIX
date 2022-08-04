@@ -172,6 +172,7 @@ cd /home/$HUSER
 sudo -u $HUSER mkdir -p go/src/github.com/e-gun
 cd /home/$HUSER/go/src/github.com/e-gun
 sudo -u $HUSER git clone https://github.com/e-gun/HipparchiaGoDBHelper.git
+# sudo -u $HUSER git clone https://github.com/e-gun/HipparchiaGoBinaries.git
 cd HipparchiaGoDBHelper
 sudo -u $HUSER go mod init
 sudo -u $HUSER go mod tidy
@@ -184,4 +185,20 @@ sudo -u $HUSER $HIPPHOME/bin/pip3 install gunicorn
 # sudo -u  hipparchia /home/hipparchia/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock -t 1200 --workers=1 server:hipparchia
 # daemon -c -u hipparchia -R 10 /home/hipparchia/hipparchia_venv/bin/gunicorn --bind=unix:/tmp/gunicorn.sock -t 1200 --workers=1 --chdir /home/hipparchia/hipparchia_venv/HipparchiaServer server:hipparchia
 cp $NIXPATH/hipparchia_rc.sh /usr/local/etc/rc.d/hipparchia
+chmod 755 /usr/local/etc/rc.d/hipparchia
 echo hipparchia_enable="YES" >> /etc/rc.conf
+
+cp $NIXPATH/freebsd_nginx_conf.txt $NIXPATH/local_nginx_conf.txt
+CONFIGFILE="$NIXPATH/local_nginx_conf.txt"
+# this might be wrong if you have the wrong humber of interfaces
+MYIP=`ifconfig | grep "inet " | cut -f2 -d " " | head -n 1`
+INTERNALPORT="5010"
+sed -i "" "s/server EXTERNALINTERFACE:WEBSOCKETSERVEDPORT/server $MYIP:$INTERNALPORT/" $CONFIGFILE
+cp $CONFIGFILE /usr/local/etc/nginx/nginx.conf
+
+# should also adjust networksettings.py
+# POLLCONNECTIONTYPE = 'redis'
+
+# should also adjust helpersettings.py
+# EXTERNALGRABBER = True
+# EXTERNALWEBSOCKETS = True
