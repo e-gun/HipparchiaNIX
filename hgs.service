@@ -1,0 +1,18 @@
+[Unit]
+Description=daemon for HipparchiaGoServer
+After=network.target
+
+[Service]
+User=hipparchia
+Group=hipparchia
+RuntimeDirectory=HipparchiaGoServer
+WorkingDirectory=/home/hipparchia
+# --preload will cause problems
+# --workers has been kept low since each seach is already designed to peg a system; this effectively sets the # of possible concurrent searches
+# also, if workers > 1 you will lose access to the progress polls
+ExecStart=/home/hipparchia/HipparchiaGoServer -sa 10.0.1.120 -au
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+[Install]
+WantedBy=multi-user.target
