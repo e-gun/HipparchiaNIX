@@ -62,9 +62,10 @@ $HIPPHOME/bin/pip3 install matplotlib
 $HIPPHOME/bin/pip3 install cython scipy numpy gensim pyLDAvis networkx scikit-learn umap-learn
 
 # psycopg2 has problems doing streamcopy in later editions
-$HIPPHOME/bin/pip3 install psycopg2==2.8.5
+# $HIPPHOME/bin/pip3 install psycopg2==2.8.5
 # might also need...
-sudo apt install -y build-essential libpq-dev
+# sudo apt install -y build-essential libpq-dev
+$HIPPHOME/bin/pip3 install psycopg2
 
 sudo -u postgres createdb -E UTF8 $THEDB
 cp $BUILDERPATH/builder/sql/generate_hipparchia_dbs.sql /tmp

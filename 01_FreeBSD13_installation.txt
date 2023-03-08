@@ -67,8 +67,9 @@ GIT="sudo -u ${HUSER} git"
 sudo -u $HUSER python3 -m venv $HIPPHOME
 sudo -u $HUSER $HIPPHOME/bin/python3 -m pip install --upgrade pip
 sudo -u $HUSER $HIPPHOME/bin/pip3 install flask websockets flask_wtf flask_login
-# psycopg2 no longer does streamcopy properly (2.9.1)?
-sudo -u $HUSER $HIPPHOME/bin/pip3 install psycopg2==2.8.5
+# psycopg2 has problems doing streamcopy in later editions
+# $HIPPHOME/bin/pip3 install psycopg2==2.8.5
+$HIPPHOME/bin/pip3 install psycopg2
 
 cd $HIPPHOME
 $GIT clone https://github.com/e-gun/HipparchiaServer.git
